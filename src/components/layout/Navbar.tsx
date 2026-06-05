@@ -1,5 +1,11 @@
+"use client";
+
 import Link from "next/link";
-import ThemeToggle from "@/components/ui/ThemeToggle";
+import dynamic from "next/dynamic";
+
+const ThemeToggle = dynamic(() => import("@/components/ui/ThemeToggle"), {
+  ssr: false,
+});
 
 export default function Navbar() {
   return (
