@@ -35,10 +35,8 @@ export default async function BlogDetailsPage({
         </div>
       </div>
 
-      <div className="prose prose-lg dark:prose-invert max-w-none">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-          {post.content}
-        </ReactMarkdown>
+      <div className="prose dark:prose-invert">
+        <ReactMarkdown>{post.content}</ReactMarkdown>
       </div>
     </article>
   );
