@@ -9,7 +9,7 @@ const ThemeToggle = dynamic(() => import("@/components/ui/ThemeToggle"), {
 
 export default function Navbar() {
   return (
-    <nav className="border-b">
+    <nav className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur dark:bg-slate-950/80">
       <div className="mx-auto flex max-w-6xl items-center justify-between p-4">
         <Link
           href="/"
