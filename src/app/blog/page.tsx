@@ -1,24 +1,27 @@
-import Link from "next/link";
+import BlogCard from "@/components/blog/BlogCard";
 import { getAllPosts } from "@/lib/blog";
 
 export default function BlogPage() {
-  const posts = getAllPosts();
+  const posts = getAllPosts()
+    .filter((post) => post.published)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-4xl font-bold mb-8">Blog</h1>
+    <main className="mx-auto max-w-6xl px-6 py-12">
+      <h1 className="mb-2 text-4xl font-bold">Blog</h1>
 
-      {posts.map((post: any) => (
-        <Link
-          key={post.slug}
-          href={`/blog/${post.slug}`}
-          className="block border rounded-lg p-4 mb-4"
-        >
-          <h2 className="text-2xl font-semibold">{post.title}</h2>
+      <p className="mb-10 text-gray-500">
+        Articles, tutorials, and development notes.
+      </p>
 
-          <p>{post.description}</p>
-        </Link>
-      ))}
-    </div>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {posts.map((post) => (
+          <BlogCard
+            key={post.slug}
+            {...post}
+          />
+        ))}
+      </div>
+    </main>
   );
 }

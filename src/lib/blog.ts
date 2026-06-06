@@ -11,7 +11,7 @@ const postsDirectory = path.join(
 export function getAllPosts() {
     const files = fs.readdirSync(postsDirectory);
 
-    const posts = files.map((fileName) => {
+    return files.map((fileName) => {
         const slug = fileName.replace(".md", "");
 
         const fullPath = path.join(
@@ -37,6 +37,36 @@ export function getAllPosts() {
             readTime: readingTime(content).text,
         };
     });
+}
 
-    return posts;
+export function getPostBySlug(slug: string) {
+    const fullPath = path.join(
+        postsDirectory,
+        `${slug}.md`
+    );
+
+    if (!fs.existsSync(fullPath)) {
+        return null;
+    }
+
+    const fileContents = fs.readFileSync(
+        fullPath,
+        "utf8"
+    );
+
+    const { data, content } =
+        matter(fileContents);
+
+    return {
+        slug,
+        content,
+        title: data.title,
+        description: data.description,
+        category: data.category,
+        featured: data.featured,
+        published: data.published,
+        date: data.date,
+        coverImage: data.coverImage,
+        readTime: readingTime(content).text,
+    };
 }

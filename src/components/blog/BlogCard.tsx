@@ -19,7 +19,7 @@ export default function BlogCard({
     <article className="rounded-xl border p-6 transition hover:shadow-md">
       <span className="rounded-full border px-3 py-1 text-xs">{category}</span>
 
-      <h3 className="mt-4 text-xl font-semibold">{title}</h3>
+      <h2 className="mt-4 text-xl font-semibold">{title}</h2>
 
       <p className="mt-3 text-sm text-gray-500">{description}</p>
 
