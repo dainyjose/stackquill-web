@@ -1,33 +1,10 @@
 import BlogCard from "@/components/blog/BlogCard";
-
-const featuredPosts = [
-  {
-    title: "React Native Performance Tips",
-    description:
-      "Practical techniques to improve performance in React Native applications.",
-    category: "React Native",
-    readTime: "5 min read",
-    slug: "react-native-performance-tips",
-  },
-  {
-    title: "Getting Started with Next.js",
-    description:
-      "A beginner-friendly guide to building modern web applications.",
-    category: "Next.js",
-    readTime: "7 min read",
-    slug: "getting-started-with-nextjs",
-  },
-  {
-    title: "TypeScript Best Practices",
-    description:
-      "Patterns and practices that improve maintainability and type safety.",
-    category: "TypeScript",
-    readTime: "6 min read",
-    slug: "typescript-best-practices",
-  },
-];
+import { getAllPosts } from "@/lib/blog";
 
 export default function FeaturedPosts() {
+  const featuredPosts = getAllPosts()
+    .filter((post) => post.featured)
+    .slice(0, 3);
   return (
     <section className="mx-auto max-w-6xl px-6 py-16">
       <div className="mb-8">

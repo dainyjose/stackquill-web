@@ -1,47 +1,42 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import readingTime from "reading-time";
 
-const blogDirectory = path.join(process.cwd(), "content/blogs");
+const postsDirectory = path.join(
+    process.cwd(),
+    "content/blogs"
+);
 
 export function getAllPosts() {
-    const files = fs.readdirSync(blogDirectory);
+    const files = fs.readdirSync(postsDirectory);
 
-    return files.map((file) => {
-        const filePath = path.join(blogDirectory, file);
-        const fileContent = fs.readFileSync(filePath, "utf8");
+    const posts = files.map((fileName) => {
+        const slug = fileName.replace(".md", "");
 
-        const { data } = matter(fileContent);
+        const fullPath = path.join(
+            postsDirectory,
+            fileName
+        );
+
+        const fileContents =
+            fs.readFileSync(fullPath, "utf8");
+
+        const { data, content } =
+            matter(fileContents);
 
         return {
-            ...data,
-            fileName: file,
+            slug,
+            title: data.title,
+            description: data.description,
+            category: data.category,
+            featured: data.featured,
+            published: data.published,
+            date: data.date,
+            coverImage: data.coverImage,
+            readTime: readingTime(content).text,
         };
     });
-}
 
-export function getPostBySlug(slug: string) {
-    const files = fs.readdirSync(blogDirectory);
-
-    const matchedFile = files.find((file) => {
-        const filePath = path.join(blogDirectory, file);
-        const fileContent = fs.readFileSync(filePath, "utf8");
-        const { data } = matter(fileContent);
-
-        return data.slug === slug;
-    });
-
-    if (!matchedFile) {
-        return null;
-    }
-
-    const filePath = path.join(blogDirectory, matchedFile);
-    const fileContent = fs.readFileSync(filePath, "utf8");
-
-    const { data, content } = matter(fileContent);
-
-    return {
-        ...data,
-        content,
-    };
+    return posts;
 }
