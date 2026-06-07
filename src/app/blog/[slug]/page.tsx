@@ -2,6 +2,7 @@ import { getPostBySlug } from "@/lib/blog";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 
 interface BlogDetailsPageProps {
   params: Promise<{
@@ -34,7 +35,17 @@ export default async function BlogDetailsPage({
           <span>{post.readTime}</span>
         </div>
       </div>
-
+      {post.coverImage && (
+        <div className="relative mt-8 mb-10 h-[400px] w-full overflow-hidden rounded-2xl">
+          <Image
+            src={post.coverImage}
+            alt={post.title}
+            fill
+            priority
+            className="object-cover"
+          />
+        </div>
+      )}
       <div className="prose dark:prose-invert">
         <ReactMarkdown>{post.content}</ReactMarkdown>
       </div>

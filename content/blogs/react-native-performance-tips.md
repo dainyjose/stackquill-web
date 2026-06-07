@@ -5,7 +5,7 @@ category: "React Native"
 featured: true
 published: true
 date: "2026-06-06"
-coverImage: "/images/react-native-performance.jpg"
+coverImage: "/images/blogs/react-native-performance.jpg"
 ---
 
 # React Native Performance Tips
