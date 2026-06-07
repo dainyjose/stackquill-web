@@ -1,5 +1,5 @@
-import BlogCard from "@/components/blog/BlogCard";
 import { getAllPosts } from "@/lib/blog";
+import BlogSearch from "@/components/blog/BlogSearch";
 
 export default function BlogPage() {
   const posts = getAllPosts()
@@ -14,14 +14,7 @@ export default function BlogPage() {
         Articles, tutorials, and development notes.
       </p>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {posts.map((post) => (
-          <BlogCard
-            key={post.slug}
-            {...post}
-          />
-        ))}
-      </div>
+      <BlogSearch posts={posts} />
     </main>
   );
 }
