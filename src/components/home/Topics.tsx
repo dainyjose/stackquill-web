@@ -1,27 +1,22 @@
-const topics = [
-  "React Native",
-  "Next.js",
-  "TypeScript",
-  "Expo",
-  "Mobile Development",
-  "Web Development",
-  "Security",
-  "Architecture",
-];
+import Link from "next/link";
+import { getAllCategories } from "@/lib/blog";
 
 export default function Topics() {
+  const categories = getAllCategories();
+
   return (
     <section className="mx-auto max-w-6xl px-6 py-16">
       <h2 className="mb-8 text-3xl font-bold">Topics</h2>
 
       <div className="flex flex-wrap gap-3">
-        {topics.map((topic) => (
-          <span
-            key={topic}
-            className="rounded-full border px-4 py-2"
+        {categories.map((category) => (
+          <Link
+            key={category.slug}
+            href={`/topics/${category.slug}`}
+            className="rounded-full border px-4 py-2 transition hover:bg-gray-100 dark:hover:bg-slate-800"
           >
-            {topic}
-          </span>
+            {category.name} ({category.count})
+          </Link>
         ))}
       </div>
     </section>
