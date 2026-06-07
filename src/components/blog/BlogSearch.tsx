@@ -31,6 +31,7 @@ export default function BlogSearch({ posts }: BlogSearchProps) {
 
   return (
     <>
+    <div className="mb-6 flex flex-col items-center justify-between">
       <input
         type="text"
         placeholder="Search articles..."
@@ -42,11 +43,13 @@ export default function BlogSearch({ posts }: BlogSearchProps) {
       {filteredPosts.length === 0 ? (
         <div className="mt-10 text-center">No articles found.</div>
       ) : (
-        <p className="mb-6 text-sm text-gray-500">
-          {filteredPosts.length}{" "}
-          {filteredPosts.length === 1 ? "article" : "articles"} found
-        </p>
-      )}
+        query?.length > 0 && (
+          <p className="mb-6 text-sm text-gray-500">
+            {filteredPosts.length}{" "}
+            {filteredPosts.length === 1 ? "article" : "articles"} found
+          </p>
+        )
+      )}</div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {filteredPosts.map((post) => (
