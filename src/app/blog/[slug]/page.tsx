@@ -1,8 +1,9 @@
-import { getPostBySlug } from "@/lib/blog";
+import { getPostBySlug, getRelatedPosts } from "@/lib/blog";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import RelatedPosts from "@/components/blog/RelatedPosts";
 
 interface BlogDetailsPageProps {
   params: Promise<{
@@ -20,6 +21,9 @@ export default async function BlogDetailsPage({
   if (!post) {
     notFound();
   }
+
+  const relatedPosts = getRelatedPosts(post.slug, post.category);
+
   return (
     <article className="mx-auto max-w-4xl px-6 py-12">
       <div className="mb-8">
@@ -49,6 +53,7 @@ export default async function BlogDetailsPage({
       <div className="prose dark:prose-invert">
         <ReactMarkdown>{post.content}</ReactMarkdown>
       </div>
+      <RelatedPosts posts={relatedPosts} />
     </article>
   );
 }

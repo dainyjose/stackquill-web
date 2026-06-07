@@ -111,3 +111,18 @@ export function getPostsByCategory(
             categorySlug
     );
 }
+
+export function getRelatedPosts(
+    currentSlug: string,
+    category: string,
+    limit = 3
+) {
+    return getAllPosts()
+        .filter(
+            (post) =>
+                post.slug !== currentSlug &&
+                post.category === category &&
+                post.published
+        )
+        .slice(0, limit);
+}
