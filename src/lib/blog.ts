@@ -63,6 +63,7 @@ export function getPostBySlug(slug: string) {
         title: data.title,
         description: data.description,
         category: data.category,
+        keywords: data.keywords ?? [],
         featured: data.featured,
         published: data.published,
         date: data.date,

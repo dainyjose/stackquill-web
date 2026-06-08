@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { siteConfig } from "@/lib/site";
 import { getPostBySlug, getRelatedPosts } from "@/lib/blog";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -7,10 +9,55 @@ import RelatedPosts from "@/components/blog/RelatedPosts";
 import TableOfContents from "@/components/blog/TableOfContents";
 import { extractHeadings } from "@/lib/toc";
 import CodeBlock from "@/components/blog/CodeBlock";
+
 interface BlogDetailsPageProps {
   params: Promise<{
     slug: string;
   }>;
+}
+
+export async function generateMetadata({
+  params,
+}: BlogDetailsPageProps): Promise<Metadata> {
+  const { slug } = await params;
+
+  const post = getPostBySlug(slug);
+
+  if (!post) {
+    return {};
+  }
+
+  return {
+    title: post.title,
+
+    description: post.description,
+
+    keywords: post.keywords,
+
+    authors: [
+      {
+        name: siteConfig.author,
+      },
+    ],
+
+    openGraph: {
+      title: post.title,
+      description: post.description,
+
+      url: `${siteConfig.url}/blog/${slug}`,
+
+      type: "article",
+
+      images: post.coverImage ? [post.coverImage] : [siteConfig.ogImage],
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+      images: post.coverImage ? [post.coverImage] : [siteConfig.ogImage],
+    },
+  };
 }
 
 export default async function BlogDetailsPage({

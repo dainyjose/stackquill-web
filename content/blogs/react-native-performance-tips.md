@@ -2,6 +2,10 @@
 title: "React Native Performance Tips"
 description: "Techniques to improve performance in React Native applications."
 category: "React Native"
+keywords:
+  - react native
+  - mobile development
+  - performance
 featured: true
 published: true
 date: "2026-06-06"
