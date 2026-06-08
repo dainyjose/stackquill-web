@@ -4,6 +4,8 @@ import remarkGfm from "remark-gfm";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import RelatedPosts from "@/components/blog/RelatedPosts";
+import TableOfContents from "@/components/blog/TableOfContents";
+import { extractHeadings } from "@/lib/toc";
 
 interface BlogDetailsPageProps {
   params: Promise<{
@@ -23,6 +25,7 @@ export default async function BlogDetailsPage({
   }
 
   const relatedPosts = getRelatedPosts(post.slug, post.category);
+  const headings = extractHeadings(post.content);
 
   return (
     <article className="mx-auto max-w-4xl px-6 py-12">
@@ -55,8 +58,26 @@ export default async function BlogDetailsPage({
           />
         </div>
       )}
+      <TableOfContents headings={headings} />
+
       <div className="prose dark:prose-invert">
-        <ReactMarkdown>{post.content}</ReactMarkdown>
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            h2: ({ children }) => {
+              const text = String(children);
+
+              const id = text
+                .toLowerCase()
+                .replace(/[^\w\s]/g, "")
+                .replace(/\s+/g, "-");
+
+              return <h2 id={id}>{children}</h2>;
+            },
+          }}
+        >
+          {post.content}
+        </ReactMarkdown>
       </div>
       <RelatedPosts posts={relatedPosts} />
     </article>
