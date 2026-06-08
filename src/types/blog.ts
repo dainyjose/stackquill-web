@@ -3,7 +3,8 @@ export interface BlogPost {
     title: string;
     description: string;
     category: string;
-    featured: boolean;
+    keywords?: string[];
+    featured?: boolean;
     published: boolean;
     date: string;
     coverImage?: string;

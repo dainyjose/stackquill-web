@@ -2,10 +2,14 @@
 title: "React Native Performance Tips"
 description: "Techniques to improve performance in React Native applications."
 category: "React Native"
+keywords:
+  - react native
+  - mobile development
+  - performance
 featured: true
 published: true
 date: "2026-06-06"
-coverImage: "/images/react-native-performance.jpg"
+coverImage: "/images/blogs/react-native-performance.jpg"
 ---
 
 # React Native Performance Tips
@@ -27,3 +31,15 @@ Use:
 - keyExtractor
 - getItemLayout
 - removeClippedSubviews
+
+# React Native Example
+
+```tsx
+const HomeScreen = () => {
+  return (
+    <View>
+      <Text>Hello World</Text>
+    </View>
+  );
+};
+```

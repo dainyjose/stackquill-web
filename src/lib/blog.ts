@@ -63,10 +63,67 @@ export function getPostBySlug(slug: string) {
         title: data.title,
         description: data.description,
         category: data.category,
+        keywords: data.keywords ?? [],
         featured: data.featured,
         published: data.published,
         date: data.date,
         coverImage: data.coverImage,
         readTime: readingTime(content).text,
     };
+}
+
+export function getAllCategories() {
+    const posts = getAllPosts();
+
+    const categoriesMap = new Map<
+        string,
+        number
+    >();
+
+    posts.forEach((post) => {
+        const count =
+            categoriesMap.get(post.category) ?? 0;
+
+        categoriesMap.set(
+            post.category,
+            count + 1
+        );
+    });
+
+    return Array.from(
+        categoriesMap.entries()
+    ).map(([name, count]) => ({
+        name,
+        slug: name
+            .toLowerCase()
+            .replace(/\s+/g, "-"),
+        count,
+    }));
+}
+
+export function getPostsByCategory(
+    categorySlug: string
+) {
+    return getAllPosts().filter(
+        (post) =>
+            post.category
+                .toLowerCase()
+                .replace(/\s+/g, "-") ===
+            categorySlug
+    );
+}
+
+export function getRelatedPosts(
+    currentSlug: string,
+    category: string,
+    limit = 3
+) {
+    return getAllPosts()
+        .filter(
+            (post) =>
+                post.slug !== currentSlug &&
+                post.category === category &&
+                post.published
+        )
+        .slice(0, limit);
 }

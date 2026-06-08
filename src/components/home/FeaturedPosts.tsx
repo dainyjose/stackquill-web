@@ -8,7 +8,13 @@ export default function FeaturedPosts() {
   return (
     <section className="mx-auto max-w-6xl px-6 py-16">
       <div className="mb-8">
-        <h2 className="text-3xl font-bold">Featured Posts</h2>
+        <div className="flex items-center gap-2">
+          <span className="rounded-full bg-yellow-100 px-3 py-1 text-xs font-medium dark:bg-yellow-900/30">
+            ⭐ Featured
+          </span>
+
+          <h2 className="text-3xl font-bold">Featured Posts</h2>
+        </div>
 
         <p className="mt-2 text-gray-500">
           Recommended articles and deep dives.

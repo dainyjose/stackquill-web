@@ -1,13 +1,36 @@
 import type { Metadata } from "next";
 import "./globals.css";
-
+import { siteConfig } from "@/lib/site";
 import Navbar from "@/components/layout/Navbar";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "ThoughtForge",
-  description: "Learning, Building, Sharing",
+  title: {
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`,
+  },
+
+  description: siteConfig.description,
+
+  metadataBase: new URL(siteConfig.url),
+
+  openGraph: {
+    title: siteConfig.name,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    images: [siteConfig.ogImage],
+    locale: "en_US",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: [siteConfig.ogImage],
+  },
 };
 
 export default function RootLayout({
