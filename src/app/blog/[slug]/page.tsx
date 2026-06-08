@@ -27,10 +27,15 @@ export default async function BlogDetailsPage({
   return (
     <article className="mx-auto max-w-4xl px-6 py-12">
       <div className="mb-8">
-        <span className="rounded-full border px-3 py-1 text-sm">
+        <span className="rounded-full border px-3 py-1  text-sm">
           {post.category}
         </span>
 
+        {post.featured && (
+          <span className=" rounded-full border px-3 py-1 text-sm  ml-2">
+            ⭐ Featured Article
+          </span>
+        )}
         <h1 className="mt-4 text-5xl font-bold">{post.title}</h1>
 
         <div className="mt-4 flex gap-4 text-sm text-gray-500">

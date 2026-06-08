@@ -8,6 +8,7 @@ interface BlogCardProps {
   readTime: string;
   slug: string;
   coverImage?: string;
+  featured?: boolean;
 }
 
 export default function BlogCard({
@@ -17,9 +18,15 @@ export default function BlogCard({
   readTime,
   slug,
   coverImage,
+  featured,
 }: BlogCardProps) {
   return (
-    <article className="rounded-xl border p-6 transition hover:shadow-md">
+    <article className="relative overflow-hidden rounded-xl border">
+      {featured && (
+        <span className="absolute right-3 top-3 z-10 rounded-full border bg-background px-3 py-1 text-xs font-medium">
+          ⭐ Featured
+        </span>
+      )}
       {coverImage && (
         <div className="relative h-52 w-full">
           <Image
