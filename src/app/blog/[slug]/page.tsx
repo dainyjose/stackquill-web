@@ -6,7 +6,7 @@ import Image from "next/image";
 import RelatedPosts from "@/components/blog/RelatedPosts";
 import TableOfContents from "@/components/blog/TableOfContents";
 import { extractHeadings } from "@/lib/toc";
-
+import CodeBlock from "@/components/blog/CodeBlock";
 interface BlogDetailsPageProps {
   params: Promise<{
     slug: string;
@@ -64,15 +64,24 @@ export default async function BlogDetailsPage({
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
-            h2: ({ children }) => {
-              const text = String(children);
+            code(props) {
+              const { children, className } = props;
 
-              const id = text
-                .toLowerCase()
-                .replace(/[^\w\s]/g, "")
-                .replace(/\s+/g, "-");
+              const match = /language-(\w+)/.exec(className || "");
 
-              return <h2 id={id}>{children}</h2>;
+              if (!match) {
+                return (
+                  <code className="rounded bg-muted px-1 py-0.5">
+                    {children}
+                  </code>
+                );
+              }
+
+              return (
+                <CodeBlock language={match[1]}>
+                  {String(children).replace(/\n$/, "")}
+                </CodeBlock>
+              );
             },
           }}
         >

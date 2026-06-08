@@ -27,3 +27,15 @@ Use:
 - keyExtractor
 - getItemLayout
 - removeClippedSubviews
+
+# React Native Example
+
+```tsx
+const HomeScreen = () => {
+  return (
+    <View>
+      <Text>Hello World</Text>
+    </View>
+  );
+};
+```
