@@ -1,5 +1,6 @@
 "use client";
 
+import { categories } from "@/data/categories";
 import Image from "next/image";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
@@ -99,12 +100,22 @@ export default function BlogForm() {
           <div>
             <label className="mb-2 block font-medium">Category</label>
 
-            <input
+            <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              placeholder="React Native"
               className="w-full rounded-lg border p-3"
-            />
+            >
+              <option value="">Select Category</option>
+
+              {categories.map((category) => (
+                <option
+                  key={category.id}
+                  value={category.name}
+                >
+                  {category.name}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </div>
