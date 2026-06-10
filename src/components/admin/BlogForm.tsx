@@ -6,16 +6,30 @@ import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-export default function BlogForm() {
-  const [title, setTitle] = useState("");
-  const [slug, setSlug] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
-  const [coverImage, setCoverImage] = useState("");
-  const [content, setContent] = useState("");
+interface BlogFormProps {
+  initialData?: {
+    title: string;
+    slug: string;
+    description: string;
+    category: string;
+    coverImage: string;
+    content: string;
+    featured: boolean;
+    published: boolean;
+  };
+}
 
-  const [featured, setFeatured] = useState(false);
-  const [published, setPublished] = useState(false);
+export default function BlogForm({ initialData }: BlogFormProps) {
+  const [title, setTitle] = useState(initialData?.title ?? "");
+  const [slug, setSlug] = useState(initialData?.slug ?? "");
+  const [description, setDescription] = useState(
+    initialData?.description ?? "",
+  );
+  const [category, setCategory] = useState(initialData?.category ?? "");
+  const [coverImage, setCoverImage] = useState(initialData?.coverImage ?? "");
+  const [content, setContent] = useState(initialData?.content ?? "");
+  const [featured, setFeatured] = useState(initialData?.featured ?? false);
+  const [published, setPublished] = useState(initialData?.published ?? false);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
