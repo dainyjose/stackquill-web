@@ -1,7 +1,13 @@
 import CategoryForm from "@/components/admin/CategoryForm";
 import CategoryList from "@/components/admin/CategoryList";
+import { prisma } from "@/lib/prisma";
 
-export default function CategoriesPage() {
+export default async function CategoriesPage() {
+  const categories = await prisma.category.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
   return (
     <div className="space-y-8">
       <div>
@@ -12,7 +18,7 @@ export default function CategoriesPage() {
 
       <CategoryForm />
 
-      <CategoryList />
+      <CategoryList categories={categories} />
     </div>
   );
 }

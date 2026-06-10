@@ -1,19 +1,34 @@
 "use client";
 
+import { createCategory } from "@/actions/category";
 import { useState } from "react";
 
 export default function CategoryForm() {
   const [name, setName] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log({
-      name,
-      slug: name.toLowerCase().replace(/\s+/g, "-"),
-    });
+    const slug = name
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, "")
+      .replace(/\s+/g, "-");
 
-    setName("");
+    try {
+      await createCategory({
+        name,
+        slug,
+      });
+
+      setName("");
+
+      alert("Category created");
+    } catch (error) {
+      console.error(error);
+
+      alert("Failed to create category");
+    }
   };
 
   return (

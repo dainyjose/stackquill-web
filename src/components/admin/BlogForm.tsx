@@ -1,5 +1,6 @@
 "use client";
 
+import { createBlog } from "@/actions/blog";
 import { categories } from "@/data/categories";
 import Image from "next/image";
 import { useState } from "react";
@@ -45,26 +46,25 @@ export default function BlogForm({ initialData }: BlogFormProps) {
     );
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const blogData = {
-      title,
-      slug,
-      description,
-      category,
-      coverImage,
-      content,
-      featured,
-      published,
-    };
+    try {
+      await createBlog({
+        title,
+        slug,
+        description,
+        content,
+        category,
+        coverImage,
+        featured,
+        published,
+      });
 
-    console.log(blogData);
-
-    // TODO:
-    // Save blog
-    // Create markdown file
-    // Call API
+      alert("Blog created");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
