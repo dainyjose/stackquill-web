@@ -1,18 +1,24 @@
 "use client";
 
 import { createBlog } from "@/actions/blog";
-import { categories } from "@/data/categories";
+
 import Image from "next/image";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+interface Category {
+  id: string;
+  name: string;
+}
 interface BlogFormProps {
+  categories: Category[];
+
   initialData?: {
     title: string;
     slug: string;
     description: string;
-    category: string;
+    categoryId: string;
     coverImage: string;
     content: string;
     featured: boolean;
@@ -20,13 +26,13 @@ interface BlogFormProps {
   };
 }
 
-export default function BlogForm({ initialData }: BlogFormProps) {
+export default function BlogForm({ categories, initialData }: BlogFormProps) {
   const [title, setTitle] = useState(initialData?.title ?? "");
   const [slug, setSlug] = useState(initialData?.slug ?? "");
   const [description, setDescription] = useState(
     initialData?.description ?? "",
   );
-  const [category, setCategory] = useState(initialData?.category ?? "");
+  const [categoryId, setCategoryId] = useState(initialData?.category ?? "");
   const [coverImage, setCoverImage] = useState(initialData?.coverImage ?? "");
   const [content, setContent] = useState(initialData?.content ?? "");
   const [featured, setFeatured] = useState(initialData?.featured ?? false);
@@ -55,7 +61,7 @@ export default function BlogForm({ initialData }: BlogFormProps) {
         slug,
         description,
         content,
-        category,
+        categoryId,
         coverImage,
         featured,
         published,
@@ -115,8 +121,8 @@ export default function BlogForm({ initialData }: BlogFormProps) {
             <label className="mb-2 block font-medium">Category</label>
 
             <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              value={categoryId}
+              onChange={(e) => setCategoryId(e.target.value)}
               className="w-full rounded-lg border p-3"
             >
               <option value="">Select Category</option>
@@ -124,7 +130,7 @@ export default function BlogForm({ initialData }: BlogFormProps) {
               {categories.map((category) => (
                 <option
                   key={category.id}
-                  value={category.name}
+                  value={category.id}
                 >
                   {category.name}
                 </option>

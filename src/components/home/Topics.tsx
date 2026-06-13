@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { getAllCategories } from "@/lib/blog";
 
-export default function Topics() {
-  const categories = getAllCategories();
+export default async function Topics() {
+  const categories = await getAllCategories();
 
   return (
     <section className="mx-auto max-w-6xl px-6 py-16">

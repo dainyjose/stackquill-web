@@ -1,10 +1,9 @@
 import BlogCard from "@/components/blog/BlogCard";
-import { getAllPosts } from "@/lib/blog";
+import { getFeaturedPosts } from "@/lib/blog";
 
-export default function FeaturedPosts() {
-  const featuredPosts = getAllPosts()
-    .filter((post) => post.featured)
-    .slice(0, 3);
+export default async function FeaturedPosts() {
+  const featuredPosts = await getFeaturedPosts();
+
   return (
     <section className="mx-auto max-w-6xl px-6 py-16">
       <div className="mb-8">

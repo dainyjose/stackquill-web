@@ -13,7 +13,7 @@ interface TopicPageProps {
 export default async function TopicPage({ params }: TopicPageProps) {
   const { slug } = await params;
 
-  const categories = getAllCategories();
+  const categories = await getAllCategories();
 
   const category = categories.find((item) => item.slug === slug);
 
@@ -21,7 +21,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
     notFound();
   }
 
-  const posts = getPostsByCategory(slug);
+  const posts = await getPostsByCategory(slug);
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-12">

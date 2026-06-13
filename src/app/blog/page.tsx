@@ -1,7 +1,7 @@
 import BlogSearch from "@/components/blog/BlogSearch";
-import { getAllPosts } from "@/lib/blog";
-import { POSTS_PER_PAGE } from "@/lib/constants";
 import Pagination from "@/components/blog/Pagination";
+import { POSTS_PER_PAGE } from "@/lib/constants";
+import { prisma } from "@/lib/prisma";
 
 interface BlogPageProps {
   searchParams: Promise<{
@@ -14,16 +14,27 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
   const currentPage = Number(page) || 1;
 
-  const posts = getAllPosts()
-    .filter((post) => post.published)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const posts = await prisma.blog.findMany({
+    where: {
+      published: true,
+    },
+    skip: (currentPage - 1) * POSTS_PER_PAGE,
+    take: POSTS_PER_PAGE,
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      category: true,
+    },
+  });
 
-  const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
+  const totalPosts = await prisma.blog.count({
+    where: {
+      published: true,
+    },
+  });
 
-  const paginatedPosts = posts.slice(
-    (currentPage - 1) * POSTS_PER_PAGE,
-    currentPage * POSTS_PER_PAGE,
-  );
+  const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-12">
@@ -33,7 +44,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         Articles, tutorials, and development notes.
       </p>
 
-      <BlogSearch posts={paginatedPosts} />
+      <BlogSearch posts={posts} />
 
       <Pagination
         currentPage={currentPage}

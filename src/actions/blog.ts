@@ -7,7 +7,7 @@ interface CreateBlogPayload {
     slug: string;
     description: string;
     content: string;
-    category: string;
+    categoryId: string;
     coverImage: string;
     featured: boolean;
     published: boolean;

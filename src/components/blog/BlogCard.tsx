@@ -4,10 +4,18 @@ import Image from "next/image";
 interface BlogCardProps {
   title: string;
   description: string;
-  category: string;
-  readTime: string;
   slug: string;
-  coverImage?: string;
+
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+  };
+
+  readTime?: string;
+
+  coverImage?: string | null;
+
   featured?: boolean;
 }
 
@@ -39,7 +47,7 @@ export default function BlogCard({
       )}
       <div className="p-6">
         <span className="rounded-full border px-3 py-1 text-xs">
-          {category}
+          {category?.name}
         </span>
 
         <h2 className="mt-4 text-xl font-semibold">{title}</h2>
@@ -47,7 +55,9 @@ export default function BlogCard({
         <p className="mt-3 text-sm text-gray-500">{description}</p>
 
         <div className="mt-4 flex items-center justify-between">
-          <span className="text-sm text-gray-500">{readTime}</span>
+          {readTime && (
+            <span className="text-sm text-gray-500">{readTime}</span>
+          )}
 
           <Link
             href={`/blog/${slug}`}
