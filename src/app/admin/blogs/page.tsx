@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getAllPosts } from "@/lib/blog";
 import DeleteBlogButton from "@/components/admin/DeleteBlogButton";
+import PublishToggleButton from "@/components/admin/PublishToggleButton";
 
 export default async function BlogsPage() {
   const posts = await getAllPosts();
@@ -29,8 +30,12 @@ export default async function BlogsPage() {
               <p className="text-sm text-muted-foreground">
                 {post?.category?.name}
               </p>
+              <span>{post.published ? "Published" : "Draft"}</span>
             </div>
-
+            <PublishToggleButton
+              slug={post.slug}
+              published={post.published}
+            />
             <div className="flex gap-2">
               <Link
                 href={`/admin/blogs/${post.slug}`}

@@ -34,3 +34,24 @@ export async function deleteBlog(slug: string) {
     revalidatePath("/blog");
     revalidatePath("/");
 }
+
+export async function togglePublished(slug: string) {
+    const blog = await prisma.blog.findUnique({
+        where: { slug },
+    });
+
+    if (!blog) {
+        throw new Error("Blog not found");
+    }
+
+    await prisma.blog.update({
+        where: { slug },
+        data: {
+            published: !blog.published,
+        },
+    });
+
+    revalidatePath("/admin/blogs");
+    revalidatePath("/blog");
+    revalidatePath("/");
+}
