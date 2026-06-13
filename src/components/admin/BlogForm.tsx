@@ -1,8 +1,9 @@
 "use client";
 
-import { createBlog } from "@/actions/blog";
+import { createBlog, updateBlog } from "@/actions/blog";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -32,11 +33,13 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
   const [description, setDescription] = useState(
     initialData?.description ?? "",
   );
-  const [categoryId, setCategoryId] = useState(initialData?.category ?? "");
+  const [categoryId, setCategoryId] = useState(initialData?.categoryId ?? "");
   const [coverImage, setCoverImage] = useState(initialData?.coverImage ?? "");
   const [content, setContent] = useState(initialData?.content ?? "");
   const [featured, setFeatured] = useState(initialData?.featured ?? false);
   const [published, setPublished] = useState(initialData?.published ?? false);
+  const router = useRouter();
+  const isEditMode = !!initialData;
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -56,18 +59,33 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
     e.preventDefault();
 
     try {
-      await createBlog({
-        title,
-        slug,
-        description,
-        content,
-        categoryId,
-        coverImage,
-        featured,
-        published,
-      });
+      if (isEditMode) {
+        await updateBlog(initialData.slug, {
+          title,
+          slug,
+          description,
+          content,
+          categoryId,
+          coverImage,
+          featured,
+          published,
+        });
+      } else {
+        await createBlog({
+          title,
+          slug,
+          description,
+          content,
+          categoryId,
+          coverImage,
+          featured,
+          published,
+        });
+      }
 
-      alert("Blog created");
+      // alert("Blog created");
+      router.push("/admin/blogs");
+      router.refresh();
     } catch (error) {
       console.error(error);
     }
@@ -241,7 +259,7 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
           type="submit"
           className="rounded-lg border px-6 py-3 font-medium"
         >
-          Publish Blog
+          {isEditMode ? "Update Blog" : "Publish Blog"}
         </button>
       </div>
     </form>

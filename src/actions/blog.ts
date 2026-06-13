@@ -18,9 +18,31 @@ interface CreateBlogPayload {
 export async function createBlog(
     data: CreateBlogPayload,
 ) {
-    return prisma.blog.create({
+    const blog = await prisma.blog.create({
         data,
     });
+
+    revalidatePath("/admin/blogs");
+    revalidatePath("/blog");
+    revalidatePath("/");
+
+    return blog;
+}
+
+export async function updateBlog(
+    slug: string,
+    data: CreateBlogPayload,
+) {
+    const blog = await prisma.blog.update({
+        where: {
+            slug,
+        },
+        data,
+    });
+    revalidatePath("/admin/blogs");
+    revalidatePath("/blog");
+    revalidatePath("/");
+    return blog;
 }
 
 export async function deleteBlog(slug: string) {
