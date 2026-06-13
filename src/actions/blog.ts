@@ -1,6 +1,8 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
+
 
 interface CreateBlogPayload {
     title: string;
@@ -19,4 +21,16 @@ export async function createBlog(
     return prisma.blog.create({
         data,
     });
+}
+
+export async function deleteBlog(slug: string) {
+    await prisma.blog.delete({
+        where: {
+            slug,
+        },
+    });
+
+    revalidatePath("/admin/blogs");
+    revalidatePath("/blog");
+    revalidatePath("/");
 }

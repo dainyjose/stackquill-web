@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAllPosts } from "@/lib/blog";
+import DeleteBlogButton from "@/components/admin/DeleteBlogButton";
 
 export default async function BlogsPage() {
   const posts = await getAllPosts();
@@ -30,15 +31,19 @@ export default async function BlogsPage() {
               </p>
             </div>
 
-            <Link
-              href={`/admin/blogs/${post?.slug}`}
-              className="rounded-lg border px-4 py-2"
-            >
-              Edit
-            </Link>
+            <div className="flex gap-2">
+              <Link
+                href={`/admin/blogs/${post.slug}`}
+                className="rounded-lg border px-4 py-2"
+              >
+                Edit
+              </Link>
+
+              <DeleteBlogButton slug={post.slug} />
+            </div>
           </div>
         ))}
-      </div>{" "}
+      </div>
     </div>
   );
 }
