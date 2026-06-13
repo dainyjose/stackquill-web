@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 interface CreateCategoryPayload {
     name: string;
@@ -10,7 +11,8 @@ interface CreateCategoryPayload {
 export async function createCategory(
     data: CreateCategoryPayload,
 ) {
-    return prisma.category.create({
+    await prisma.category.create({
         data,
     });
+    revalidatePath("/admin/categories");
 }
