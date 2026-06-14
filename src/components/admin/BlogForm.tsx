@@ -38,6 +38,7 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
   const [content, setContent] = useState(initialData?.content ?? "");
   const [featured, setFeatured] = useState(initialData?.featured ?? false);
   const [published, setPublished] = useState(initialData?.published ?? false);
+  const [uploading, setUploading] = useState(false);
   const router = useRouter();
   const isEditMode = !!initialData;
 
@@ -89,6 +90,29 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    setUploading(true);
+
+    const formData = new FormData();
+
+    formData.append("file", file);
+
+    const response = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    setCoverImage(data.url);
+
+    setUploading(false);
   };
 
   return (
@@ -163,13 +187,11 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
         <h2 className="mb-6 text-xl font-semibold">Cover Image</h2>
 
         <input
-          type="text"
-          value={coverImage}
-          onChange={(e) => setCoverImage(e.target.value)}
-          placeholder="/images/blogs/react-native-performance.jpg"
-          className="w-full rounded-lg border p-3"
+          type="file"
+          accept="image/*"
+          onChange={handleImageUpload}
         />
-
+        {uploading && <p className="mt-2 text-sm">Uploading image...</p>}
         {coverImage && (
           <div className="mt-6 overflow-hidden rounded-xl border">
             <div className="relative h-72 w-full">
