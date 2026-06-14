@@ -39,6 +39,7 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
   const [featured, setFeatured] = useState(initialData?.featured ?? false);
   const [published, setPublished] = useState(initialData?.published ?? false);
   const [uploading, setUploading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const router = useRouter();
   const isEditMode = !!initialData;
 
@@ -56,8 +57,40 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
     );
   };
 
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!title.trim()) {
+      newErrors.title = "Title is required";
+    }
+
+    if (!slug.trim()) {
+      newErrors.slug = "Slug is required";
+    }
+
+    if (!description.trim()) {
+      newErrors.description = "Description is required";
+    }
+
+    if (!categoryId) {
+      newErrors.categoryId = "Please select a category";
+    }
+
+    if (!content.trim()) {
+      newErrors.content = "Content is required";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
 
     try {
       if (isEditMode) {
@@ -84,11 +117,16 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
         });
       }
 
-      // alert("Blog created");
       router.push("/admin/blogs");
       router.refresh();
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      if (error.code === "P2002") {
+        setErrors({
+          slug: "A blog with this slug already exists",
+        });
+        return;
+      }
     }
   };
 
@@ -134,6 +172,9 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
               placeholder="React Native Performance Tips"
               className="w-full rounded-lg border p-3"
             />
+            {errors.title && (
+              <p className="mt-1 text-sm text-red-500">{errors.title}</p>
+            )}
           </div>
 
           <div>
@@ -145,6 +186,9 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
               placeholder="react-native-performance-tips"
               className="w-full rounded-lg border p-3"
             />
+            {errors.slug && (
+              <p className="mt-1 text-sm text-red-500">{errors.slug}</p>
+            )}
           </div>
 
           <div>
@@ -157,6 +201,9 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
               placeholder="Short summary of the blog post"
               className="w-full rounded-lg border p-3"
             />
+            {errors.description && (
+              <p className="mt-1 text-sm text-red-500">{errors.description}</p>
+            )}
           </div>
 
           <div>
@@ -178,6 +225,9 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
                 </option>
               ))}
             </select>
+            {errors.categoryId && (
+              <p className="mt-1 text-sm text-red-500">{errors.categoryId}</p>
+            )}
           </div>
         </div>
       </div>
@@ -221,6 +271,9 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
               placeholder="# My Blog Title"
               className="min-h-[700px] w-full rounded-lg border p-4 font-mono"
             />
+            {errors.content && (
+              <p className="mt-1 text-sm text-red-500">{errors.content}</p>
+            )}
           </div>
 
           <div>
