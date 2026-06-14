@@ -4,11 +4,16 @@ import { useMemo, useState } from "react";
 import BlogCard from "./BlogCard";
 
 interface Blog {
+  id: string;
   slug: string;
   title: string;
   description: string;
-  category: string;
-  readTime: string;
+  createdAt: Date;
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+  };
 }
 
 interface BlogSearchProps {
@@ -25,31 +30,32 @@ export default function BlogSearch({ posts }: BlogSearchProps) {
       (post) =>
         post.title.toLowerCase().includes(search) ||
         post.description.toLowerCase().includes(search) ||
-        post.category.toLowerCase().includes(search),
+        post.category.name.toLowerCase().includes(search),
     );
   }, [posts, query]);
 
   return (
     <>
-    <div className="mb-6 flex flex-col items-center justify-between">
-      <input
-        type="text"
-        placeholder="Search articles..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        className="mb-2 w-full rounded-lg border p-3"
-      />
+      <div className="mb-6 flex flex-col items-center justify-between">
+        <input
+          type="text"
+          placeholder="Search articles..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="mb-2 w-full rounded-lg border p-3"
+        />
 
-      {filteredPosts.length === 0 ? (
-        <div className="mt-10 text-center">No articles found.</div>
-      ) : (
-        query?.length > 0 && (
-          <p className="mb-6 text-sm text-gray-500">
-            {filteredPosts.length}{" "}
-            {filteredPosts.length === 1 ? "article" : "articles"} found
-          </p>
-        )
-      )}</div>
+        {filteredPosts.length === 0 ? (
+          <div className="mt-10 text-center">No articles found.</div>
+        ) : (
+          query?.length > 0 && (
+            <p className="mb-6 text-sm text-gray-500">
+              {filteredPosts.length}{" "}
+              {filteredPosts.length === 1 ? "article" : "articles"} found
+            </p>
+          )
+        )}
+      </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {filteredPosts.map((post) => (

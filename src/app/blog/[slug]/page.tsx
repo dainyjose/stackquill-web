@@ -21,7 +21,7 @@ export async function generateMetadata({
 }: BlogDetailsPageProps): Promise<Metadata> {
   const { slug } = await params;
 
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     return {};
@@ -65,13 +65,13 @@ export default async function BlogDetailsPage({
 }: BlogDetailsPageProps) {
   const { slug } = await params;
 
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     notFound();
   }
 
-  const relatedPosts = getRelatedPosts(post.slug, post.category);
+  const relatedPosts = await getRelatedPosts(post.slug, post.categoryId);
   const headings = extractHeadings(post.content);
 
   return (
@@ -80,7 +80,7 @@ export default async function BlogDetailsPage({
       <article className="mx-auto max-w-4xl px-6 py-12">
         <div className="mb-8">
           <span className="rounded-full border px-3 py-1  text-sm">
-            {post.category}
+            {post.category?.name}
           </span>
 
           {post.featured && (

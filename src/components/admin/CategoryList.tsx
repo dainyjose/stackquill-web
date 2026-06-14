@@ -2,9 +2,17 @@
 
 import { Pencil, Trash2 } from "lucide-react";
 
-const categories = ["React Native", "Next.js", "TypeScript", "Expo"];
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+}
 
-export default function CategoryList() {
+interface CategoryListProps {
+  categories: Category[];
+}
+
+export default function CategoryList({ categories }: CategoryListProps) {
   return (
     <div className="rounded-xl border">
       <div className="border-b p-4">
@@ -14,19 +22,13 @@ export default function CategoryList() {
       <div>
         {categories.map((category) => (
           <div
-            key={category}
-            className="flex items-center justify-between border-b p-4 last:border-b-0"
+            key={category.id}
+            className="flex items-center justify-between border-b p-4"
           >
-            <span>{category}</span>
+            <div>
+              <p>{category.name}</p>
 
-            <div className="flex gap-2">
-              <button className="rounded-lg border p-2">
-                <Pencil size={16} />
-              </button>
-
-              <button className="rounded-lg border p-2">
-                <Trash2 size={16} />
-              </button>
+              <p className="text-sm text-muted-foreground">{category.slug}</p>
             </div>
           </div>
         ))}

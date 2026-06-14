@@ -1,31 +1,8 @@
 import BlogCard from "@/components/blog/BlogCard";
+import { getLatestPosts } from "@/lib/blog";
 
-const latestPosts = [
-  {
-    title: "Understanding React Hooks",
-    description: "A practical guide to useState, useEffect, and custom hooks.",
-    category: "React",
-    readTime: "4 min read",
-    slug: "understanding-react-hooks",
-  },
-  {
-    title: "Expo Development Workflow",
-    description: "Tips for building and maintaining Expo applications.",
-    category: "Expo",
-    readTime: "6 min read",
-    slug: "expo-development-workflow",
-  },
-  {
-    title: "Mobile App Security Basics",
-    description:
-      "Common security practices every mobile developer should know.",
-    category: "Security",
-    readTime: "8 min read",
-    slug: "mobile-app-security-basics",
-  },
-];
-
-export default function LatestPosts() {
+export default async function LatestPosts() {
+  const latestPosts = await getLatestPosts();
   return (
     <section className="mx-auto max-w-6xl px-6 py-16">
       <div className="mb-8">

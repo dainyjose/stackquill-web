@@ -1,129 +1,145 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
+
 import readingTime from "reading-time";
+import { prisma } from "@/lib/prisma";
 
-const postsDirectory = path.join(
-    process.cwd(),
-    "content/blogs"
-);
-
-export function getAllPosts() {
-    const files = fs.readdirSync(postsDirectory);
-
-    return files.map((fileName) => {
-        const slug = fileName.replace(".md", "");
-
-        const fullPath = path.join(
-            postsDirectory,
-            fileName
-        );
-
-        const fileContents =
-            fs.readFileSync(fullPath, "utf8");
-
-        const { data, content } =
-            matter(fileContents);
-
-        return {
-            slug,
-            title: data.title,
-            description: data.description,
-            category: data.category,
-            featured: data.featured,
-            published: data.published,
-            date: data.date,
-            coverImage: data.coverImage,
-            readTime: readingTime(content).text,
-        };
-    });
-}
-
-export function getPostBySlug(slug: string) {
-    const fullPath = path.join(
-        postsDirectory,
-        `${slug}.md`
-    );
-
-    if (!fs.existsSync(fullPath)) {
-        return null;
-    }
-
-    const fileContents = fs.readFileSync(
-        fullPath,
-        "utf8"
-    );
-
-    const { data, content } =
-        matter(fileContents);
-
-    return {
-        slug,
-        content,
-        title: data.title,
-        description: data.description,
-        category: data.category,
-        keywords: data.keywords ?? [],
-        featured: data.featured,
-        published: data.published,
-        date: data.date,
-        coverImage: data.coverImage,
-        readTime: readingTime(content).text,
-    };
-}
-
-export function getAllCategories() {
-    const posts = getAllPosts();
-
-    const categoriesMap = new Map<
-        string,
-        number
-    >();
-
-    posts.forEach((post) => {
-        const count =
-            categoriesMap.get(post.category) ?? 0;
-
-        categoriesMap.set(
-            post.category,
-            count + 1
-        );
+export async function getAllPosts() {
+    const blogs = await prisma.blog.findMany({
+        include: {
+            category: true,
+        },
+        orderBy: {
+            createdAt: "desc",
+        },
     });
 
-    return Array.from(
-        categoriesMap.entries()
-    ).map(([name, count]) => ({
-        name,
-        slug: name
-            .toLowerCase()
-            .replace(/\s+/g, "-"),
-        count,
+    return blogs.map((blog) => ({
+        ...blog,
+        readTime: readingTime(
+            blog.content
+        ).text,
     }));
 }
 
-export function getPostsByCategory(
-    categorySlug: string
-) {
-    return getAllPosts().filter(
-        (post) =>
-            post.category
-                .toLowerCase()
-                .replace(/\s+/g, "-") ===
-            categorySlug
-    );
+export async function getPublishedPosts() {
+    return prisma.blog.findMany({
+        where: {
+            published: true,
+        },
+        include: {
+            category: true,
+        },
+        orderBy: {
+            createdAt: "desc",
+        },
+    });
 }
 
-export function getRelatedPosts(
+export async function getPostBySlug(
+    slug: string
+) {
+    const blog =
+        await prisma.blog.findUnique({
+            where: {
+                slug,
+            },
+            include: {
+                category: true,
+            },
+        });
+
+    if (!blog) {
+        return null;
+    }
+
+    return {
+        ...blog,
+        readTime: readingTime(
+            blog.content
+        ).text,
+    };
+}
+
+export async function getAllCategories() {
+    return prisma.category.findMany({
+        include: {
+            _count: {
+                select: {
+                    blogs: true,
+                },
+            },
+        },
+        orderBy: {
+            name: "asc",
+        },
+    });
+}
+
+export async function getPostsByCategory(
+    categorySlug: string
+) {
+    return prisma.blog.findMany({
+        where: {
+            category: {
+                slug: categorySlug,
+            },
+            published: true,
+        },
+        include: {
+            category: true,
+        },
+        orderBy: {
+            createdAt: "desc",
+        },
+    });
+}
+
+export async function getRelatedPosts(
     currentSlug: string,
-    category: string,
+    categoryId: string,
     limit = 3
 ) {
-    return getAllPosts()
-        .filter(
-            (post) =>
-                post.slug !== currentSlug &&
-                post.category === category &&
-                post.published
-        )
-        .slice(0, limit);
+    return prisma.blog.findMany({
+        where: {
+            slug: {
+                not: currentSlug,
+            },
+            categoryId,
+            published: true,
+        },
+        take: limit,
+        include: {
+            category: true,
+        },
+    });
+}
+
+export async function getFeaturedPosts() {
+    return prisma.blog.findMany({
+        where: {
+            featured: true,
+            published: true,
+        },
+        include: {
+            category: true,
+        },
+        take: 3,
+        orderBy: {
+            createdAt: "desc",
+        },
+    });
+}
+
+export async function getLatestPosts() {
+    return prisma.blog.findMany({
+        where: {
+            published: true,
+        },
+        include: {
+            category: true,
+        },
+        take: 3,
+        orderBy: {
+            createdAt: "desc",
+        },
+    });
 }

@@ -1,0 +1,6 @@
+{
+  "files.exclude": {
+    "**/dev.db": true,
+    "**/*.db-journal": true
+  }
+}

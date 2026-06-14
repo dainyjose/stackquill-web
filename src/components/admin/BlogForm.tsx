@@ -1,17 +1,25 @@
 "use client";
 
-import { categories } from "@/data/categories";
+import { createBlog, updateBlog } from "@/actions/blog";
+
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+interface Category {
+  id: string;
+  name: string;
+}
 interface BlogFormProps {
+  categories: Category[];
+
   initialData?: {
     title: string;
     slug: string;
     description: string;
-    category: string;
+    categoryId: string;
     coverImage: string;
     content: string;
     featured: boolean;
@@ -19,17 +27,21 @@ interface BlogFormProps {
   };
 }
 
-export default function BlogForm({ initialData }: BlogFormProps) {
+export default function BlogForm({ categories, initialData }: BlogFormProps) {
   const [title, setTitle] = useState(initialData?.title ?? "");
   const [slug, setSlug] = useState(initialData?.slug ?? "");
   const [description, setDescription] = useState(
     initialData?.description ?? "",
   );
-  const [category, setCategory] = useState(initialData?.category ?? "");
+  const [categoryId, setCategoryId] = useState(initialData?.categoryId ?? "");
   const [coverImage, setCoverImage] = useState(initialData?.coverImage ?? "");
   const [content, setContent] = useState(initialData?.content ?? "");
   const [featured, setFeatured] = useState(initialData?.featured ?? false);
   const [published, setPublished] = useState(initialData?.published ?? false);
+  const [uploading, setUploading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const router = useRouter();
+  const isEditMode = !!initialData;
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -45,26 +57,100 @@ export default function BlogForm({ initialData }: BlogFormProps) {
     );
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!title.trim()) {
+      newErrors.title = "Title is required";
+    }
+
+    if (!slug.trim()) {
+      newErrors.slug = "Slug is required";
+    }
+
+    if (!description.trim()) {
+      newErrors.description = "Description is required";
+    }
+
+    if (!categoryId) {
+      newErrors.categoryId = "Please select a category";
+    }
+
+    if (!content.trim()) {
+      newErrors.content = "Content is required";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const blogData = {
-      title,
-      slug,
-      description,
-      category,
-      coverImage,
-      content,
-      featured,
-      published,
-    };
+    if (!validateForm()) {
+      return;
+    }
 
-    console.log(blogData);
+    try {
+      if (isEditMode) {
+        await updateBlog(initialData.slug, {
+          title,
+          slug,
+          description,
+          content,
+          categoryId,
+          coverImage,
+          featured,
+          published,
+        });
+      } else {
+        await createBlog({
+          title,
+          slug,
+          description,
+          content,
+          categoryId,
+          coverImage,
+          featured,
+          published,
+        });
+      }
 
-    // TODO:
-    // Save blog
-    // Create markdown file
-    // Call API
+      router.push("/admin/blogs");
+      router.refresh();
+    } catch (error: any) {
+      console.error(error);
+      if (error.code === "P2002") {
+        setErrors({
+          slug: "A blog with this slug already exists",
+        });
+        return;
+      }
+    }
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    setUploading(true);
+
+    const formData = new FormData();
+
+    formData.append("file", file);
+
+    const response = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    setCoverImage(data.url);
+
+    setUploading(false);
   };
 
   return (
@@ -86,6 +172,9 @@ export default function BlogForm({ initialData }: BlogFormProps) {
               placeholder="React Native Performance Tips"
               className="w-full rounded-lg border p-3"
             />
+            {errors.title && (
+              <p className="mt-1 text-sm text-red-500">{errors.title}</p>
+            )}
           </div>
 
           <div>
@@ -97,6 +186,9 @@ export default function BlogForm({ initialData }: BlogFormProps) {
               placeholder="react-native-performance-tips"
               className="w-full rounded-lg border p-3"
             />
+            {errors.slug && (
+              <p className="mt-1 text-sm text-red-500">{errors.slug}</p>
+            )}
           </div>
 
           <div>
@@ -109,14 +201,17 @@ export default function BlogForm({ initialData }: BlogFormProps) {
               placeholder="Short summary of the blog post"
               className="w-full rounded-lg border p-3"
             />
+            {errors.description && (
+              <p className="mt-1 text-sm text-red-500">{errors.description}</p>
+            )}
           </div>
 
           <div>
             <label className="mb-2 block font-medium">Category</label>
 
             <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              value={categoryId}
+              onChange={(e) => setCategoryId(e.target.value)}
               className="w-full rounded-lg border p-3"
             >
               <option value="">Select Category</option>
@@ -124,12 +219,15 @@ export default function BlogForm({ initialData }: BlogFormProps) {
               {categories.map((category) => (
                 <option
                   key={category.id}
-                  value={category.name}
+                  value={category.id}
                 >
                   {category.name}
                 </option>
               ))}
             </select>
+            {errors.categoryId && (
+              <p className="mt-1 text-sm text-red-500">{errors.categoryId}</p>
+            )}
           </div>
         </div>
       </div>
@@ -139,13 +237,11 @@ export default function BlogForm({ initialData }: BlogFormProps) {
         <h2 className="mb-6 text-xl font-semibold">Cover Image</h2>
 
         <input
-          type="text"
-          value={coverImage}
-          onChange={(e) => setCoverImage(e.target.value)}
-          placeholder="/images/blogs/react-native-performance.jpg"
-          className="w-full rounded-lg border p-3"
+          type="file"
+          accept="image/*"
+          onChange={handleImageUpload}
         />
-
+        {uploading && <p className="mt-2 text-sm">Uploading image...</p>}
         {coverImage && (
           <div className="mt-6 overflow-hidden rounded-xl border">
             <div className="relative h-72 w-full">
@@ -175,6 +271,9 @@ export default function BlogForm({ initialData }: BlogFormProps) {
               placeholder="# My Blog Title"
               className="min-h-[700px] w-full rounded-lg border p-4 font-mono"
             />
+            {errors.content && (
+              <p className="mt-1 text-sm text-red-500">{errors.content}</p>
+            )}
           </div>
 
           <div>
@@ -235,7 +334,7 @@ export default function BlogForm({ initialData }: BlogFormProps) {
           type="submit"
           className="rounded-lg border px-6 py-3 font-medium"
         >
-          Publish Blog
+          {isEditMode ? "Update Blog" : "Publish Blog"}
         </button>
       </div>
     </form>

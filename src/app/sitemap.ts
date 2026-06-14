@@ -3,8 +3,8 @@ import { MetadataRoute } from "next";
 import { getAllPosts } from "@/lib/blog";
 import { siteConfig } from "@/lib/site";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-    const posts = getAllPosts();
+export default async function sitemap(): MetadataRoute.Sitemap {
+    const posts = await getAllPosts();
 
     const blogRoutes = posts.map((post) => ({
         url: `${siteConfig.url}/blog/${post.slug}`,

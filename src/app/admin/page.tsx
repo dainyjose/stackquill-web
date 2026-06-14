@@ -1,22 +1,40 @@
-export default function AdminPage() {
+import { prisma } from "@/lib/prisma";
+
+export default async function AdminPage() {
+  const [totalPosts, publishedPosts, draftPosts, totalCategories] =
+    await Promise.all([
+      prisma.blog.count(),
+      prisma.blog.count({
+        where: { published: true },
+      }),
+      prisma.blog.count({
+        where: { published: false },
+      }),
+      prisma.category.count(),
+    ]);
   return (
     <div>
       <h1 className="mb-6 text-4xl font-bold">Dashboard</h1>
 
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-4">
         <div className="rounded-xl border p-6">
           <h2>Total Posts</h2>
-          <p className="mt-2 text-3xl font-bold">12</p>
+          <p className="mt-2 text-3xl font-bold">{totalPosts}</p>
         </div>
 
         <div className="rounded-xl border p-6">
           <h2>Published</h2>
-          <p className="mt-2 text-3xl font-bold">10</p>
+          <p className="mt-2 text-3xl font-bold">{publishedPosts}</p>
         </div>
 
         <div className="rounded-xl border p-6">
           <h2>Drafts</h2>
-          <p className="mt-2 text-3xl font-bold">2</p>
+          <p className="mt-2 text-3xl font-bold">{draftPosts}</p>
+        </div>
+
+        <div className="rounded-xl border p-6">
+          <h2>Categories</h2>
+          <p className="mt-2 text-3xl font-bold">{totalCategories}</p>
         </div>
       </div>
     </div>
