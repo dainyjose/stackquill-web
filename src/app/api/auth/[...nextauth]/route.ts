@@ -10,9 +10,6 @@ const handler = NextAuth({
                 password: {},
             },
             async authorize(credentials) {
-                console.log("INPUT:", credentials);
-                console.log("ENV USER:", process.env.ADMIN_USERNAME);
-                console.log("ENV PASS:", process.env.ADMIN_PASSWORD);
                 if (
                     credentials?.username === process.env.ADMIN_USERNAME &&
                     credentials?.password === process.env.ADMIN_PASSWORD
@@ -32,6 +29,10 @@ const handler = NextAuth({
     },
     session: {
         strategy: "jwt",
+        maxAge: 60 * 60,
+    },
+    jwt: {
+        maxAge: 60 * 60,
     },
 });
 
