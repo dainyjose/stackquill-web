@@ -9,8 +9,15 @@ interface SettingsFormProps {
     siteName: string;
     siteTagline?: string | null;
     aboutMe?: string | null;
+
+    email?: string | null;
+
     githubUrl?: string | null;
     linkedinUrl?: string | null;
+    devtoUrl?: string | null;
+
+    metaTitle?: string | null;
+    metaDescription?: string | null;
   } | null;
 }
 
@@ -20,6 +27,14 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
   const [aboutMe, setAboutMe] = useState(settings?.aboutMe ?? "");
   const [githubUrl, setGithubUrl] = useState(settings?.githubUrl ?? "");
   const [linkedinUrl, setLinkedinUrl] = useState(settings?.linkedinUrl ?? "");
+  const [email, setEmail] = useState(settings?.email ?? "");
+  const [devtoUrl, setDevtoUrl] = useState(settings?.devtoUrl ?? "");
+
+  const [metaTitle, setMetaTitle] = useState(settings?.metaTitle ?? "");
+
+  const [metaDescription, setMetaDescription] = useState(
+    settings?.metaDescription ?? "",
+  );
 
   const router = useRouter();
 
@@ -30,8 +45,15 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
       siteName,
       siteTagline,
       aboutMe,
+
+      email,
+
       githubUrl,
       linkedinUrl,
+      devtoUrl,
+
+      metaTitle,
+      metaDescription,
     });
 
     router.refresh();
@@ -92,6 +114,52 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
           onChange={(e) => setLinkedinUrl(e.target.value)}
           className="w-full rounded-lg border p-3"
         />
+      </div>
+      <div>
+        <label className="mb-2 block">Email</label>
+
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full rounded-lg border p-3"
+        />
+      </div>
+
+      <div>
+        <label className="mb-2 block">Dev.to URL</label>
+
+        <input
+          value={devtoUrl}
+          onChange={(e) => setDevtoUrl(e.target.value)}
+          className="w-full rounded-lg border p-3"
+        />
+      </div>
+      <div className="rounded-xl border p-6">
+        <h2 className="mb-6 text-xl font-semibold">SEO Settings</h2>
+
+        <div className="space-y-4">
+          <div>
+            <label className="mb-2 block">Meta Title</label>
+
+            <input
+              value={metaTitle}
+              onChange={(e) => setMetaTitle(e.target.value)}
+              className="w-full rounded-lg border p-3"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block">Meta Description</label>
+
+            <textarea
+              rows={4}
+              value={metaDescription}
+              onChange={(e) => setMetaDescription(e.target.value)}
+              className="w-full rounded-lg border p-3"
+            />
+          </div>
+        </div>
       </div>
 
       <button

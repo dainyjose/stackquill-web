@@ -40,13 +40,21 @@ model Category {
 
 
 model Setting {
-  id            String  @id @default(cuid())
-  siteName      String
-  siteTagline   String?
-  aboutMe       String?
-  githubUrl     String?
-  linkedinUrl   String?
-  twitterUrl    String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id              String   @id @default(cuid())
+
+  siteName        String
+  siteTagline     String?
+  aboutMe         String?
+
+  email           String?
+
+  githubUrl       String?
+  linkedinUrl     String?
+  devtoUrl        String?
+
+  metaTitle       String?
+  metaDescription String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }

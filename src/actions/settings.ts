@@ -7,9 +7,15 @@ interface UpdateSettingsPayload {
     siteName: string;
     siteTagline?: string;
     aboutMe?: string;
+
+    email?: string;
+
     githubUrl?: string;
     linkedinUrl?: string;
-    twitterUrl?: string;
+    devtoUrl?: string;
+
+    metaTitle?: string;
+    metaDescription?: string;
 }
 
 export async function saveSettings(
@@ -31,5 +37,7 @@ export async function saveSettings(
     }
 
     revalidatePath("/");
+    revalidatePath("/about");
+    revalidatePath("/blog");
     revalidatePath("/admin/settings");
 }
