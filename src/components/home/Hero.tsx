@@ -1,8 +1,22 @@
+import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 
-export default function Hero() {
+export default async function Hero() {
+  const settings = await prisma.setting.findFirst();
+
   return (
     <section className="mx-auto flex min-h-[80vh] max-w-6xl flex-col items-center justify-center px-6 text-center">
+      <h1 className="mb-6 text-5xl font-bold tracking-tight md:text-7xl">
+        {settings?.siteName ?? "ThoughtForge"}
+      </h1>
+
+      <p className="mb-4 text-xl text-muted-foreground">
+        {settings?.siteTagline}
+      </p>
+
+      <p className="mb-8 max-w-2xl text-lg text-muted-foreground">
+        {settings?.aboutMe}
+      </p>
       <span className="mb-4 rounded-full border px-4 py-1 text-sm">
         🚀 Welcome to ThoughtForge
       </span>

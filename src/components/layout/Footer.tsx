@@ -1,37 +1,48 @@
-export default function Footer() {
+import { prisma } from "@/lib/prisma";
+
+export default async function Footer() {
+  const settings = await prisma.setting.findFirst();
+
   return (
     <footer className="border-t">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-6 md:flex-row">
         <p className="text-sm text-gray-500">
-          © {new Date().getFullYear()} ThoughtForge. All rights reserved.
+          © {new Date().getFullYear()} {settings?.siteName ?? "ThoughtForge"}.
+          All rights reserved.
         </p>
 
         <div className="flex items-center gap-4 text-sm">
-          <a
-            href="https://www.linkedin.com/in/dainyjose"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            LinkedIn
-          </a>
+          {settings?.linkedinUrl && (
+            <a
+              href={settings.linkedinUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LinkedIn
+            </a>
+          )}
 
-          <a
-            href="https://github.com/dainyjose"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub
-          </a>
+          {settings?.githubUrl && (
+            <a
+              href={settings.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub
+            </a>
+          )}
 
-          <a
-            href="https://dev.to/dainyjose"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Dev.to
-          </a>
+          {settings?.devtoUrl && (
+            <a
+              href={settings.devtoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Dev.to
+            </a>
+          )}
 
-          <a href="mailto:dainyjose.mary@gmail.com">Email</a>
+          {settings?.email && <a href={`mailto:${settings.email}`}>Email</a>}
         </div>
       </div>
     </footer>
