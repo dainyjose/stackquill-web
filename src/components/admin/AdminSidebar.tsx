@@ -29,6 +29,13 @@ export default function AdminSidebar() {
         </Link>
 
         <Link
+          href="/admin/messages"
+          className="block"
+        >
+          Messages
+        </Link>
+
+        <Link
           href="/admin/settings"
           className="block"
         >
