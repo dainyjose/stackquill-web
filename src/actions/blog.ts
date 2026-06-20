@@ -8,9 +8,14 @@ interface CreateBlogPayload {
     title: string;
     slug: string;
     description: string;
+
+    metaTitle?: string;
+    metaDescription?: string;
+
     content: string;
     categoryId: string;
-    coverImage: string;
+    coverImage?: string;
+
     featured: boolean;
     published: boolean;
 }
