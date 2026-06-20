@@ -23,6 +23,8 @@ model Blog {
   featured    Boolean  @default(false)
   published   Boolean  @default(false)
 
+  views           Int      @default(0)
+
   categoryId  String
   category    Category @relation(fields: [categoryId], references: [id])
 

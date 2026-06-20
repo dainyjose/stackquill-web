@@ -82,3 +82,18 @@ export async function togglePublished(slug: string) {
     revalidatePath("/blog");
     revalidatePath("/");
 }
+
+export async function incrementBlogViews(
+    slug: string,
+) {
+    await prisma.blog.update({
+        where: {
+            slug,
+        },
+        data: {
+            views: {
+                increment: 1,
+            },
+        },
+    });
+}
