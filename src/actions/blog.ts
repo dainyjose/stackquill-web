@@ -8,9 +8,14 @@ interface CreateBlogPayload {
     title: string;
     slug: string;
     description: string;
+
+    metaTitle?: string;
+    metaDescription?: string;
+
     content: string;
     categoryId: string;
-    coverImage: string;
+    coverImage?: string;
+
     featured: boolean;
     published: boolean;
 }
@@ -76,4 +81,19 @@ export async function togglePublished(slug: string) {
     revalidatePath("/admin/blogs");
     revalidatePath("/blog");
     revalidatePath("/");
+}
+
+export async function incrementBlogViews(
+    slug: string,
+) {
+    await prisma.blog.update({
+        where: {
+            slug,
+        },
+        data: {
+            views: {
+                increment: 1,
+            },
+        },
+    });
 }

@@ -10,6 +10,7 @@ import TableOfContents from "@/components/blog/TableOfContents";
 import { extractHeadings } from "@/lib/toc";
 import CodeBlock from "@/components/blog/CodeBlock";
 import ReadingProgressBar from "@/components/blog/ReadingProgressBar";
+import { incrementBlogViews } from "@/actions/blog";
 interface BlogDetailsPageProps {
   params: Promise<{
     slug: string;
@@ -26,6 +27,7 @@ export async function generateMetadata({
   if (!post) {
     return {};
   }
+  await incrementBlogViews(slug);
 
   return {
     title: post.title,
@@ -94,6 +96,8 @@ export default async function BlogDetailsPage({
             <span>{post.date}</span>
             <span>•</span>
             <span>{post.readTime}</span>
+            <span>•</span>
+            <span>{post.views} views</span>
           </div>
         </div>
         {post.coverImage && (

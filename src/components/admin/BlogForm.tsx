@@ -19,6 +19,8 @@ interface BlogFormProps {
     title: string;
     slug: string;
     description: string;
+    metaTitle?: string;
+    metaDescription?: string;
     categoryId: string;
     coverImage: string;
     content: string;
@@ -38,6 +40,11 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
   const [content, setContent] = useState(initialData?.content ?? "");
   const [featured, setFeatured] = useState(initialData?.featured ?? false);
   const [published, setPublished] = useState(initialData?.published ?? false);
+  const [metaTitle, setMetaTitle] = useState(initialData?.metaTitle ?? "");
+
+  const [metaDescription, setMetaDescription] = useState(
+    initialData?.metaDescription ?? "",
+  );
   const [uploading, setUploading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const router = useRouter();
@@ -98,6 +105,8 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
           title,
           slug,
           description,
+          metaTitle,
+          metaDescription,
           content,
           categoryId,
           coverImage,
@@ -109,6 +118,8 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
           title,
           slug,
           description,
+          metaTitle,
+          metaDescription,
           content,
           categoryId,
           coverImage,
@@ -290,6 +301,34 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
                 </p>
               )}
             </div>
+          </div>
+        </div>
+      </div>
+      <div className="rounded-xl border p-6">
+        <h2 className="mb-6 text-xl font-semibold">SEO Settings</h2>
+
+        <div className="grid gap-6">
+          <div>
+            <label className="mb-2 block font-medium">Meta Title</label>
+
+            <input
+              value={metaTitle}
+              onChange={(e) => setMetaTitle(e.target.value)}
+              placeholder="SEO title for search engines"
+              className="w-full rounded-lg border p-3"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block font-medium">Meta Description</label>
+
+            <textarea
+              rows={4}
+              value={metaDescription}
+              onChange={(e) => setMetaDescription(e.target.value)}
+              placeholder="SEO description for search engines"
+              className="w-full rounded-lg border p-3"
+            />
           </div>
         </div>
       </div>

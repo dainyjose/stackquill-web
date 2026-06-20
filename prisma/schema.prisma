@@ -23,6 +23,8 @@ model Blog {
   featured    Boolean  @default(false)
   published   Boolean  @default(false)
 
+  views           Int      @default(0)
+
   categoryId  String
   category    Category @relation(fields: [categoryId], references: [id])
 
@@ -34,8 +36,40 @@ model Category {
   id        String   @id @default(cuid())
   name      String   @unique
   slug      String   @unique
-
   blogs     Blog[]
+  createdAt DateTime @default(now())
+}
+
+
+model Setting {
+  id              String   @id @default(cuid())
+
+  siteName        String
+  siteTagline     String?
+  aboutMe         String?
+
+  email           String?
+
+  githubUrl       String?
+  linkedinUrl     String?
+  devtoUrl        String?
+
+  metaTitle       String?
+  metaDescription String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Contact {
+  id        String   @id @default(cuid())
+
+  name      String
+  email     String
+  subject   String?
+  message   String
+
+  isRead    Boolean  @default(false)
 
   createdAt DateTime @default(now())
 }
