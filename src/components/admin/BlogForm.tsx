@@ -1,6 +1,7 @@
 "use client";
 
 import { createBlog, updateBlog } from "@/actions/blog";
+import MDEditor from "@uiw/react-md-editor";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -271,38 +272,15 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
       <div className="rounded-xl border p-6">
         <h2 className="mb-6 text-xl font-semibold">Content</h2>
 
-        <div className="grid gap-6 lg:grid-cols-2">
-          <div>
-            <label className="mb-2 block font-medium">Markdown Editor</label>
-
-            <textarea
-              rows={25}
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="# My Blog Title"
-              className="min-h-[700px] w-full rounded-lg border p-4 font-mono"
-            />
-            {errors.content && (
-              <p className="mt-1 text-sm text-red-500">{errors.content}</p>
-            )}
-          </div>
-
-          <div>
-            <label className="mb-2 block font-medium">Live Preview</label>
-
-            <div className="prose dark:prose-invert min-h-[700px] max-w-none rounded-lg border p-6">
-              {content ? (
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {content}
-                </ReactMarkdown>
-              ) : (
-                <p className="text-muted-foreground">
-                  Preview will appear here...
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
+        <MDEditor
+          value={content}
+          onChange={(value) => setContent(value || "")}
+          preview="edit"
+          height={700}
+        />
+        {errors.content && (
+          <p className="mt-1 text-sm text-red-500">{errors.content}</p>
+        )}
       </div>
       <div className="rounded-xl border p-6">
         <h2 className="mb-6 text-xl font-semibold">SEO Settings</h2>
