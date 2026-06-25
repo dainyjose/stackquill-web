@@ -1,8 +1,23 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
 async function main() {
+    // Admin User
+    const passwordHash = await bcrypt.hash("admin123", 10);
+
+    await prisma.user.upsert({
+        where: {
+            username: "admin",
+        },
+        update: {},
+        create: {
+            username: "admin",
+            passwordHash,
+        },
+    });
+
     const reactNative = await prisma.category.upsert({
         where: {
             slug: "react-native",
