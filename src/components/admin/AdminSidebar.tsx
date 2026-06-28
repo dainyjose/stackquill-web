@@ -36,6 +36,13 @@ export default function AdminSidebar() {
         </Link>
 
         <Link
+          href="/admin/profile"
+          className="block"
+        >
+          Profile
+        </Link>
+
+        <Link
           href="/admin/settings"
           className="block"
         >

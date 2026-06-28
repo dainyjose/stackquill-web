@@ -1,14 +1,18 @@
 import { MetadataRoute } from "next";
-
-import { getAllPosts } from "@/lib/blog";
 import { siteConfig } from "@/lib/site";
+import { prisma } from "@/lib/prisma";
 
 export default async function sitemap(): MetadataRoute.Sitemap {
-    const posts = await getAllPosts();
+
+    const posts = await prisma.blog.findMany({
+        where: {
+            published: true,
+        },
+    });
 
     const blogRoutes = posts.map((post) => ({
         url: `${siteConfig.url}/blog/${post.slug}`,
-        lastModified: new Date(post.date),
+        lastModified: post.updatedAt,
     }));
 
     return [
@@ -16,12 +20,18 @@ export default async function sitemap(): MetadataRoute.Sitemap {
             url: siteConfig.url,
             lastModified: new Date(),
         },
-
         {
             url: `${siteConfig.url}/blog`,
             lastModified: new Date(),
         },
-
+        {
+            url: `${siteConfig.url}/about`,
+            lastModified: new Date(),
+        },
+        {
+            url: `${siteConfig.url}/contact`,
+            lastModified: new Date(),
+        },
         ...blogRoutes,
     ];
 }
