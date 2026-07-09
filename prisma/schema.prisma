@@ -19,6 +19,7 @@ model Blog {
   slug        String   @unique
   description String
   content     String
+  keywords    String? 
   coverImage  String?
   featured    Boolean  @default(false)
   published   Boolean  @default(false)

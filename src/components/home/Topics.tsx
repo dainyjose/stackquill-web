@@ -15,7 +15,7 @@ export default async function Topics() {
             href={`/topics/${category.slug}`}
             className="rounded-full border px-4 py-2 transition hover:bg-gray-100 dark:hover:bg-slate-800"
           >
-            {category.name} ({category.count})
+            {category.name} ({category._count.blogs})
           </Link>
         ))}
       </div>

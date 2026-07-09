@@ -93,7 +93,13 @@ export default async function BlogDetailsPage({
           <h1 className="mt-4 text-5xl font-bold">{post.title}</h1>
 
           <div className="mt-4 flex gap-4 text-sm text-gray-500">
-            <span>{post.date}</span>
+            <span>
+              {new Intl.DateTimeFormat("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              }).format(post.createdAt)}
+            </span>
             <span>•</span>
             <span>{post.readTime}</span>
             <span>•</span>

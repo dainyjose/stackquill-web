@@ -1,12 +1,25 @@
 export interface BlogPost {
+    id: string;
     slug: string;
     title: string;
     description: string;
-    category: string;
-    keywords?: string[];
-    featured?: boolean;
+    content: string;
+
+    keywords?: string | null;
+
+    featured: boolean;
     published: boolean;
-    date: string;
-    coverImage?: string;
-    readTime: string;
+
+    coverImage?: string | null;
+
+    views: number;
+
+    createdAt: Date;
+    updatedAt: Date;
+
+    category: {
+        id: string;
+        name: string;
+        slug: string;
+    };
 }
