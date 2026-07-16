@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import Logo from "../common/Logo";
 
 const ThemeToggle = dynamic(() => import("@/components/ui/ThemeToggle"), {
   ssr: false,
@@ -13,9 +14,14 @@ export default function Navbar() {
       <div className="mx-auto flex max-w-6xl items-center justify-between p-4">
         <Link
           href="/"
-          className="text-xl font-bold"
+          className="text-xl font-bold flex items-center gap-3"
         >
-          ThoughtForge
+          <Logo
+            width={42}
+            height={42}
+          />
+
+          <span className="text-xl font-bold">StackQuill</span>
         </Link>
 
         <div className="flex items-center gap-6">
