@@ -1,7 +1,8 @@
 export const siteConfig = {
-    name: "ThoughtForge",
+    name: "StackQuill",
+    title: "StackQuill",
     description:
-        "Learning, Building, Sharing. A developer blog by Dainy Jose.",
+        "Learning, Building, Sharing",
 
     url: "https://your-domain.com",
 

@@ -7,7 +7,7 @@ export default async function Hero() {
   return (
     <section className="mx-auto flex min-h-[80vh] max-w-6xl flex-col items-center justify-center px-6 text-center">
       <h1 className="mb-6 text-5xl font-bold tracking-tight md:text-7xl">
-        {settings?.siteName ?? "ThoughtForge"}
+        {settings?.siteName ?? "StackQuill"}
       </h1>
 
       <p className="mb-4 text-xl text-muted-foreground">
@@ -18,7 +18,7 @@ export default async function Hero() {
         {settings?.aboutMe}
       </p>
       <span className="mb-4 rounded-full border px-4 py-1 text-sm">
-        🚀 Welcome to ThoughtForge
+        🚀 Welcome to StackQuill
       </span>
 
       <h1 className="mb-6 text-5xl font-bold tracking-tight md:text-7xl">

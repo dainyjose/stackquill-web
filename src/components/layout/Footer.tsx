@@ -12,8 +12,8 @@ export default async function Footer() {
           height={32}
         />
         <p className="text-sm text-gray-500">
-          © {new Date().getFullYear()} {settings?.siteName ?? "ThoughtForge"}.
-          All rights reserved.
+          © {new Date().getFullYear()} {settings?.siteName ?? "StackQuill"}. All
+          rights reserved.
         </p>
 
         <div className="flex items-center gap-4 text-sm">
