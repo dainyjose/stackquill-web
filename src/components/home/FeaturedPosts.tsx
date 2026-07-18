@@ -4,6 +4,10 @@ import { getFeaturedPosts } from "@/lib/blog";
 export default async function FeaturedPosts() {
   const featuredPosts = await getFeaturedPosts();
 
+  if (featuredPosts.length === 0) {
+    return null;
+  }
+
   return (
     <section className="mx-auto max-w-6xl px-6 py-16">
       <div className="mb-8">
