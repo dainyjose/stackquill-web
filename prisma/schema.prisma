@@ -19,6 +19,7 @@ model Blog {
   slug        String   @unique
   description String
   content     String
+  keywords    String? 
   coverImage  String?
   featured    Boolean  @default(false)
   published   Boolean  @default(false)
@@ -42,23 +43,50 @@ model Category {
 
 
 model Setting {
-  id              String   @id @default(cuid())
+  id String @id @default(cuid())
 
+  // General
   siteName        String
   siteTagline     String?
-  aboutMe         String?
+  siteDescription String?
+  siteUrl         String?
 
+  // Homepage
+  heroBadge       String?
+  heroTitle       String?
+  heroDescription String?
+  heroTopics      String?
+
+  // About
+  aboutTitle      String?
+  aboutContent    String?
+
+  // Branding
+  logoLight       String?
+  logoDark        String?
+  favicon         String?
+
+  // Contact
   email           String?
-
   githubUrl       String?
   linkedinUrl     String?
+  twitterUrl      String?
   devtoUrl        String?
+  mediumUrl       String?
+  hashnodeUrl     String?
 
-  metaTitle       String?
-  metaDescription String?
+  // SEO
+  metaTitle              String?
+  metaDescription        String?
+  metaKeywords           String?
+  googleAnalyticsId      String?
+  googleSiteVerification String?
 
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  // Footer
+  copyright String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Contact {

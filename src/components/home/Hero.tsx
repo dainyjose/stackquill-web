@@ -3,70 +3,32 @@ import Link from "next/link";
 
 export default async function Hero() {
   const settings = await prisma.setting.findFirst();
-
+  const topics = settings?.heroTopics?.split(",").map((t) => t.trim()) ?? [];
   return (
-    <section className="mx-auto flex min-h-[80vh] max-w-6xl flex-col items-center justify-center px-6 text-center">
-      <h1 className="mb-6 text-5xl font-bold tracking-tight md:text-7xl">
-        {settings?.siteName ?? "ThoughtForge"}
-      </h1>
-
-      <p className="mb-4 text-xl text-muted-foreground">
-        {settings?.siteTagline}
-      </p>
-
-      <p className="mb-8 max-w-2xl text-lg text-muted-foreground">
-        {settings?.aboutMe}
-      </p>
-      <span className="mb-4 rounded-full border px-4 py-1 text-sm">
-        🚀 Welcome to ThoughtForge
+    <section className="mx-auto flex min-h-[80vh] max-w-6xl flex-col items-center justify-center px-6 text-center py-16">
+      {/* Badge */}
+      <span className="mb-6 rounded-full border bg-muted px-4 py-1 text-sm font-medium">
+        {settings?.heroBadge ?? "Software Engineering Blog"}
       </span>
 
-      <h1 className="mb-6 text-5xl font-bold tracking-tight md:text-7xl">
-        Learning,
-        <br />
-        Building,
-        <br />
-        Sharing
+      <p className="text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+        {settings?.siteName}
+      </p>
+      {/* Hero Title */}
+      <h1 className="mt-4 max-w-5xl text-4xl font-extrabold tracking-tight md:text-7xl">
+        {settings?.heroTitle}
       </h1>
 
-      <p className="mb-8 max-w-2xl text-lg text-muted-foreground">
-        A place where I document my development journey, share technical
-        knowledge, explore modern technologies, and build projects that solve
-        real-world problems.
+      {/* Description */}
+      <p className="mt-8 max-w-3xl text-lg leading-8 text-muted-foreground md:text-xl">
+        {settings?.heroDescription}
       </p>
-
-      <div className="flex flex-wrap justify-center gap-4">
-        <Link
-          href="/blog"
-          className="rounded-lg bg-black px-6 py-3 text-white transition hover:opacity-90 dark:bg-white dark:text-black"
-        >
-          Read Blogs
-        </Link>
-
-        <Link
-          href="/about"
-          className="rounded-lg border px-6 py-3 transition hover:bg-gray-100 dark:hover:bg-slate-800"
-        >
-          About Me
-        </Link>
-      </div>
-
-      <div className="mt-12 flex flex-wrap justify-center gap-3">
-        {[
-          "React Native",
-          "Next.js",
-          "TypeScript",
-          "Expo",
-          "Mobile Development",
-          "Web Development",
-        ].map((topic) => (
-          <span
-            key={topic}
-            className="rounded-full border px-4 py-2 text-sm"
-          >
-            {topic}
-          </span>
-        ))}
+      <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm text-muted-foreground">
+        <span>Production-ready tutorials</span>
+        <span>•</span>
+        <span>Real-world projects</span>
+        <span>•</span>
+        <span>Modern technologies</span>
       </div>
     </section>
   );

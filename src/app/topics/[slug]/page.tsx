@@ -27,7 +27,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
     <main className="mx-auto max-w-6xl px-6 py-12">
       <h1 className="mb-2 text-4xl font-bold">{category.name}</h1>
 
-      <p className="mb-10 text-gray-500">{category.count} article(s)</p>
+      <p className="mb-10 text-gray-500"> {category._count.blogs} article(s)</p>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (
