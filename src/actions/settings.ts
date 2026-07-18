@@ -2,25 +2,9 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { SettingsData } from "@/types/settings";
 
-interface UpdateSettingsPayload {
-    siteName: string;
-    siteTagline?: string;
-    aboutMe?: string;
-
-    email?: string;
-
-    githubUrl?: string;
-    linkedinUrl?: string;
-    devtoUrl?: string;
-
-    metaTitle?: string;
-    metaDescription?: string;
-}
-
-export async function saveSettings(
-    data: UpdateSettingsPayload,
-) {
+export async function saveSettings(data: SettingsData) {
     const existing = await prisma.setting.findFirst();
 
     if (existing) {
@@ -28,11 +12,78 @@ export async function saveSettings(
             where: {
                 id: existing.id,
             },
-            data,
+            data: {
+                siteName: data.siteName,
+                siteTagline: data.siteTagline,
+                siteDescription: data.siteDescription,
+                siteUrl: data.siteUrl,
+
+                heroBadge: data.heroBadge,
+                heroTitle: data.heroTitle,
+                heroDescription: data.heroDescription,
+                heroTopics: data.heroTopics,
+
+                aboutTitle: data.aboutTitle,
+                aboutContent: data.aboutContent,
+
+                logoLight: data.logoLight,
+                logoDark: data.logoDark,
+                favicon: data.favicon,
+
+                email: data.email,
+
+                githubUrl: data.githubUrl,
+                linkedinUrl: data.linkedinUrl,
+                twitterUrl: data.twitterUrl,
+                devtoUrl: data.devtoUrl,
+                mediumUrl: data.mediumUrl,
+                hashnodeUrl: data.hashnodeUrl,
+
+                metaTitle: data.metaTitle,
+                metaDescription: data.metaDescription,
+                metaKeywords: data.metaKeywords,
+                googleAnalyticsId: data.googleAnalyticsId,
+                googleSiteVerification: data.googleSiteVerification,
+
+                copyright: data.copyright,
+            },
         });
     } else {
         await prisma.setting.create({
-            data,
+            data: {
+                siteName: data.siteName,
+                siteTagline: data.siteTagline,
+                siteDescription: data.siteDescription,
+                siteUrl: data.siteUrl,
+
+                heroBadge: data.heroBadge,
+                heroTitle: data.heroTitle,
+                heroDescription: data.heroDescription,
+
+                aboutTitle: data.aboutTitle,
+                aboutContent: data.aboutContent,
+
+                logoLight: data.logoLight,
+                logoDark: data.logoDark,
+                favicon: data.favicon,
+
+                email: data.email,
+
+                githubUrl: data.githubUrl,
+                linkedinUrl: data.linkedinUrl,
+                twitterUrl: data.twitterUrl,
+                devtoUrl: data.devtoUrl,
+                mediumUrl: data.mediumUrl,
+                hashnodeUrl: data.hashnodeUrl,
+
+                metaTitle: data.metaTitle,
+                metaDescription: data.metaDescription,
+                metaKeywords: data.metaKeywords,
+                googleAnalyticsId: data.googleAnalyticsId,
+                googleSiteVerification: data.googleSiteVerification,
+
+                copyright: data.copyright,
+            },
         });
     }
 
@@ -40,4 +91,8 @@ export async function saveSettings(
     revalidatePath("/about");
     revalidatePath("/blog");
     revalidatePath("/admin/settings");
+
+    return {
+        success: true,
+    };
 }
