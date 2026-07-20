@@ -11,6 +11,7 @@ import { extractHeadings } from "@/lib/toc";
 import CodeBlock from "@/components/blog/CodeBlock";
 import ReadingProgressBar from "@/components/blog/ReadingProgressBar";
 import { incrementBlogViews } from "@/actions/blog";
+import Logo from "@/components/common/Logo";
 interface BlogDetailsPageProps {
   params: Promise<{
     slug: string;
@@ -106,7 +107,7 @@ export default async function BlogDetailsPage({
             <span>{post.views} views</span>
           </div>
         </div>
-        {post.coverImage && (
+        {post.coverImage ? (
           <div className="relative mt-8 mb-10 h-[400px] w-full overflow-hidden rounded-2xl">
             <Image
               src={post.coverImage}
@@ -115,6 +116,49 @@ export default async function BlogDetailsPage({
               priority
               className="object-cover"
             />
+          </div>
+        ) : (
+          <div
+            className="
+      relative mt-8 mb-10
+      flex h-[400px] flex-col justify-between
+      overflow-hidden rounded-2xl
+      border
+      bg-gradient-to-br
+      from-slate-50
+      via-slate-100
+      to-slate-200
+      dark:from-slate-900
+      dark:via-slate-800
+      dark:to-slate-950
+      p-10
+    "
+          >
+            {/* Soft glow */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent dark:from-white/5" />
+
+            <div className="relative z-10">
+              <span className="inline-flex rounded-full border bg-background/60 px-4 py-1 text-sm backdrop-blur">
+                {post.category?.name}
+              </span>
+            </div>
+
+            <div className="relative z-10 flex flex-col items-center justify-center">
+              <Logo
+                width={72}
+                height={72}
+              />
+
+              <p className="mt-4 text-sm uppercase tracking-[0.3em] text-muted-foreground">
+                StackQuill
+              </p>
+            </div>
+
+            <div className="relative z-10">
+              <h3 className="max-w-xl text-xl font-bold leading-tight ">
+                {post.title}
+              </h3>
+            </div>
           </div>
         )}
         <TableOfContents headings={headings} />
