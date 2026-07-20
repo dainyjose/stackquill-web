@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import Logo from "../common/Logo";
 
 interface BlogCardProps {
   title: string;
@@ -35,7 +36,7 @@ export default function BlogCard({
           ⭐ Featured
         </span>
       )}
-      {coverImage && (
+      {coverImage ? (
         <div className="relative h-52 w-full">
           <Image
             src={coverImage}
@@ -43,6 +44,35 @@ export default function BlogCard({
             fill
             className="object-cover"
           />
+        </div>
+      ) : (
+        <div
+          className="
+         relative
+  flex h-52 flex-col justify-between
+  overflow-hidden
+  rounded-xl
+  border border-white/20 dark:border-white/10
+  bg-white/30 dark:bg-slate-900/30
+  backdrop-blur-xl
+  shadow-lg shadow-black/5
+  p-6
+        "
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-transparent dark:from-white/5 pointer-events-none" />
+          <span className="w-fit rounded-full border px-3 py-1 text-xs">
+            {category.name}
+          </span>
+
+          <div className="flex items-center justify-center">
+            <Logo
+              width={36}
+              height={36}
+            />
+          </div>
+          <div>
+            <h3 className="mt-4 line-clamp-3 text-2xl font-bold">{title}</h3>
+          </div>
         </div>
       )}
       <div className="p-6">
@@ -63,7 +93,7 @@ export default function BlogCard({
             href={`/blog/${slug}`}
             className="font-medium"
           >
-            Read More →
+            Continue Reading →
           </Link>
         </div>
       </div>
