@@ -1,4 +1,5 @@
 @import "tailwindcss";
+
 @plugin "@tailwindcss/typography";
 
 :root {
@@ -13,6 +14,13 @@
   --foreground: #f8fafc;
   --card: #0f172a;
   --border: #1e293b;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-border: var(--border);
 }
 
 body {
