@@ -16,7 +16,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
   const posts = await prisma.blog.findMany({
     where: {
-      published: true,
+      status: "PUBLISHED",
     },
     skip: (currentPage - 1) * POSTS_PER_PAGE,
     take: POSTS_PER_PAGE,
@@ -30,7 +30,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
   const totalPosts = await prisma.blog.count({
     where: {
-      published: true,
+      status: "PUBLISHED",
     },
   });
 
@@ -40,16 +40,11 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
     <main className="mx-auto max-w-6xl px-6 py-12">
       <h1 className="mb-2 text-4xl font-bold">Blog</h1>
 
-      <p className="mb-10 text-gray-500">
-        Articles, tutorials, and development notes.
-      </p>
+      <p className="mb-10 text-gray-500">Articles, tutorials, and development notes.</p>
 
       <BlogSearch posts={posts} />
 
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-      />
+      <Pagination currentPage={currentPage} totalPages={totalPages} />
     </main>
   );
 }
