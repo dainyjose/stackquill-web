@@ -32,9 +32,10 @@ export async function getPublishedPosts() {
 }
 
 export async function getPostBySlug(slug: string) {
-  const blog = await prisma.blog.findUnique({
+  const blog = await prisma.blog.findFirst({
     where: {
       slug,
+      status: "PUBLISHED",
     },
     include: {
       category: true,
@@ -50,7 +51,6 @@ export async function getPostBySlug(slug: string) {
     readTime: readingTime(blog.content).text,
   };
 }
-
 export async function getAllCategories() {
   return prisma.category.findMany({
     include: {
