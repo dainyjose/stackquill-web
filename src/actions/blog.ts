@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { requireAdmin } from "@/lib/requireAdmin";
 
 interface CreateBlogPayload {
   title: string;
@@ -20,6 +21,8 @@ interface CreateBlogPayload {
 }
 
 export async function createBlog(data: CreateBlogPayload) {
+  await requireAdmin();
+
   const blog = await prisma.blog.create({
     data: {
       title: data.title,
@@ -44,6 +47,8 @@ export async function createBlog(data: CreateBlogPayload) {
 }
 
 export async function updateBlog(slug: string, data: CreateBlogPayload) {
+  await requireAdmin();
+
   const existingBlog = await prisma.blog.findUnique({
     where: {
       slug,
@@ -83,6 +88,8 @@ export async function updateBlog(slug: string, data: CreateBlogPayload) {
 }
 
 export async function deleteBlog(slug: string) {
+  await requireAdmin();
+
   await prisma.blog.delete({
     where: {
       slug,
@@ -96,6 +103,8 @@ export async function deleteBlog(slug: string) {
 }
 
 export async function togglePublished(slug: string) {
+  await requireAdmin();
+
   const blog = await prisma.blog.findUnique({
     where: {
       slug,
