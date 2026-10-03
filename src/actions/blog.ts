@@ -22,7 +22,16 @@ interface CreateBlogPayload {
 export async function createBlog(data: CreateBlogPayload) {
   const blog = await prisma.blog.create({
     data: {
-      ...data,
+      title: data.title,
+      slug: data.slug,
+      description: data.description,
+      content: data.content,
+      categoryId: data.categoryId,
+      coverImage: data.coverImage || null,
+      featured: data.featured,
+      status: data.status,
+      seoTitle: data.metaTitle || null,
+      seoDescription: data.metaDescription || null,
       publishedAt: data.status === "PUBLISHED" ? new Date() : null,
     },
   });
@@ -50,7 +59,16 @@ export async function updateBlog(slug: string, data: CreateBlogPayload) {
       slug,
     },
     data: {
-      ...data,
+      title: data.title,
+      slug: data.slug,
+      description: data.description,
+      content: data.content,
+      categoryId: data.categoryId,
+      coverImage: data.coverImage || null,
+      featured: data.featured,
+      status: data.status,
+      seoTitle: data.metaTitle || null,
+      seoDescription: data.metaDescription || null,
       publishedAt: data.status === "PUBLISHED" ? (existingBlog.publishedAt ?? new Date()) : null,
     },
   });
@@ -58,6 +76,7 @@ export async function updateBlog(slug: string, data: CreateBlogPayload) {
   revalidatePath("/admin/blogs");
   revalidatePath("/blog");
   revalidatePath(`/blog/${slug}`);
+  revalidatePath(`/blog/${data.slug}`);
   revalidatePath("/");
 
   return blog;
@@ -72,6 +91,7 @@ export async function deleteBlog(slug: string) {
 
   revalidatePath("/admin/blogs");
   revalidatePath("/blog");
+  revalidatePath(`/blog/${slug}`);
   revalidatePath("/");
 }
 
