@@ -26,26 +26,24 @@ interface BlogFormProps {
     coverImage: string;
     content: string;
     featured: boolean;
-    published: boolean;
+    status: "DRAFT" | "PUBLISHED" | "ARCHIVED";
   };
 }
 
 export default function BlogForm({ categories, initialData }: BlogFormProps) {
   const [title, setTitle] = useState(initialData?.title ?? "");
   const [slug, setSlug] = useState(initialData?.slug ?? "");
-  const [description, setDescription] = useState(
-    initialData?.description ?? "",
-  );
+  const [description, setDescription] = useState(initialData?.description ?? "");
   const [categoryId, setCategoryId] = useState(initialData?.categoryId ?? "");
   const [coverImage, setCoverImage] = useState(initialData?.coverImage ?? "");
   const [content, setContent] = useState(initialData?.content ?? "");
   const [featured, setFeatured] = useState(initialData?.featured ?? false);
-  const [published, setPublished] = useState(initialData?.published ?? false);
+  const [status, setStatus] = useState<"DRAFT" | "PUBLISHED" | "ARCHIVED">(
+    initialData?.status ?? "DRAFT"
+  );
   const [metaTitle, setMetaTitle] = useState(initialData?.metaTitle ?? "");
 
-  const [metaDescription, setMetaDescription] = useState(
-    initialData?.metaDescription ?? "",
-  );
+  const [metaDescription, setMetaDescription] = useState(initialData?.metaDescription ?? "");
   const [uploading, setUploading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const router = useRouter();
@@ -61,7 +59,7 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
         .toLowerCase()
         .trim()
         .replace(/[^\w\s-]/g, "")
-        .replace(/\s+/g, "-"),
+        .replace(/\s+/g, "-")
     );
   };
 
@@ -112,7 +110,7 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
           categoryId,
           coverImage,
           featured,
-          published,
+          status,
         });
       } else {
         await createBlog({
@@ -125,7 +123,7 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
           categoryId,
           coverImage,
           featured,
-          published,
+          status,
         });
       }
 
@@ -166,10 +164,7 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-8"
-    >
+    <form onSubmit={handleSubmit} className="space-y-8">
       {/* Basic Information */}
       <div className="rounded-xl border p-6">
         <h2 className="mb-6 text-xl font-semibold">Blog Information</h2>
@@ -184,9 +179,7 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
               placeholder="React Native Performance Tips"
               className="w-full rounded-lg border p-3"
             />
-            {errors.title && (
-              <p className="mt-1 text-sm text-red-500">{errors.title}</p>
-            )}
+            {errors.title && <p className="mt-1 text-sm text-red-500">{errors.title}</p>}
           </div>
 
           <div>
@@ -194,13 +187,11 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
 
             <input
               value={slug}
-              onChange={(e) => setSlug(e.target.value)}
+              onChange={e => setSlug(e.target.value)}
               placeholder="react-native-performance-tips"
               className="w-full rounded-lg border p-3"
             />
-            {errors.slug && (
-              <p className="mt-1 text-sm text-red-500">{errors.slug}</p>
-            )}
+            {errors.slug && <p className="mt-1 text-sm text-red-500">{errors.slug}</p>}
           </div>
 
           <div>
@@ -209,7 +200,7 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
             <textarea
               rows={3}
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={e => setDescription(e.target.value)}
               placeholder="Short summary of the blog post"
               className="w-full rounded-lg border p-3"
             />
@@ -223,23 +214,18 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
 
             <select
               value={categoryId}
-              onChange={(e) => setCategoryId(e.target.value)}
+              onChange={e => setCategoryId(e.target.value)}
               className="w-full rounded-lg border p-3"
             >
               <option value="">Select Category</option>
 
-              {categories.map((category) => (
-                <option
-                  key={category.id}
-                  value={category.id}
-                >
+              {categories.map(category => (
+                <option key={category.id} value={category.id}>
                   {category.name}
                 </option>
               ))}
             </select>
-            {errors.categoryId && (
-              <p className="mt-1 text-sm text-red-500">{errors.categoryId}</p>
-            )}
+            {errors.categoryId && <p className="mt-1 text-sm text-red-500">{errors.categoryId}</p>}
           </div>
         </div>
       </div>
@@ -248,21 +234,12 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
       <div className="rounded-xl border p-6">
         <h2 className="mb-6 text-xl font-semibold">Cover Image</h2>
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageUpload}
-        />
+        <input type="file" accept="image/*" onChange={handleImageUpload} />
         {uploading && <p className="mt-2 text-sm">Uploading image...</p>}
         {coverImage && (
           <div className="mt-6 overflow-hidden rounded-xl border">
             <div className="relative h-72 w-full">
-              <Image
-                src={coverImage}
-                alt="Cover Preview"
-                fill
-                className="object-cover"
-              />
+              <Image src={coverImage} alt="Cover Preview" fill className="object-cover" />
             </div>
           </div>
         )}
@@ -274,13 +251,11 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
 
         <MDEditor
           value={content}
-          onChange={(value) => setContent(value || "")}
+          onChange={value => setContent(value || "")}
           preview="edit"
           height={700}
         />
-        {errors.content && (
-          <p className="mt-1 text-sm text-red-500">{errors.content}</p>
-        )}
+        {errors.content && <p className="mt-1 text-sm text-red-500">{errors.content}</p>}
       </div>
       <div className="rounded-xl border p-6">
         <h2 className="mb-6 text-xl font-semibold">SEO Settings</h2>
@@ -291,7 +266,7 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
 
             <input
               value={metaTitle}
-              onChange={(e) => setMetaTitle(e.target.value)}
+              onChange={e => setMetaTitle(e.target.value)}
               placeholder="SEO title for search engines"
               className="w-full rounded-lg border p-3"
             />
@@ -303,7 +278,7 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
             <textarea
               rows={4}
               value={metaDescription}
-              onChange={(e) => setMetaDescription(e.target.value)}
+              onChange={e => setMetaDescription(e.target.value)}
               placeholder="SEO description for search engines"
               className="w-full rounded-lg border p-3"
             />
@@ -320,7 +295,7 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
             <input
               type="checkbox"
               checked={featured}
-              onChange={(e) => setFeatured(e.target.checked)}
+              onChange={e => setFeatured(e.target.checked)}
             />
 
             <span>Featured Post</span>
@@ -329,8 +304,8 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
           <label className="flex items-center gap-3">
             <input
               type="checkbox"
-              checked={published}
-              onChange={(e) => setPublished(e.target.checked)}
+              checked={status === "PUBLISHED"}
+              onChange={e => setStatus(e.target.checked ? "PUBLISHED" : "DRAFT")}
             />
 
             <span>Published</span>
@@ -340,17 +315,11 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
 
       {/* Actions */}
       <div className="flex justify-end gap-4">
-        <button
-          type="button"
-          className="rounded-lg border px-6 py-3"
-        >
+        <button type="button" className="rounded-lg border px-6 py-3">
           Save Draft
         </button>
 
-        <button
-          type="submit"
-          className="rounded-lg border px-6 py-3 font-medium"
-        >
+        <button type="submit" className="rounded-lg border px-6 py-3 font-medium">
           {isEditMode ? "Update Blog" : "Publish Blog"}
         </button>
       </div>
