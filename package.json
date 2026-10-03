@@ -9,6 +9,9 @@
     "seed": "tsx prisma/seed.ts",
     "lint": "eslint"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "dependencies": {
     "@prisma/client": "^6.19.3",
     "@tailwindcss/typography": "^0.5.19",
