@@ -138,7 +138,7 @@ export async function togglePublished(slug: string) {
 }
 
 export async function incrementBlogViews(slug: string) {
-  await prisma.blog.update({
+  const blog = await prisma.blog.update({
     where: {
       slug,
     },
@@ -147,5 +147,10 @@ export async function incrementBlogViews(slug: string) {
         increment: 1,
       },
     },
+    select: {
+      views: true,
+    },
   });
+
+  return blog.views;
 }
