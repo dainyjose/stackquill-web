@@ -38,12 +38,7 @@ export default function BlogCard({
       )}
       {coverImage ? (
         <div className="relative h-52 w-full">
-          <Image
-            src={coverImage}
-            alt={title}
-            fill
-            className="object-cover"
-          />
+          <Image src={coverImage} alt={title} fill className="object-cover" />
         </div>
       ) : (
         <div
@@ -60,39 +55,23 @@ export default function BlogCard({
         "
         >
           <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-transparent dark:from-white/5 pointer-events-none" />
-          <span className="w-fit rounded-full border px-3 py-1 text-xs">
-            {category.name}
-          </span>
 
-          <div className="flex items-center justify-center">
-            <Logo
-              width={36}
-              height={36}
-            />
-          </div>
-          <div>
-            <h3 className="mt-4 line-clamp-3 text-2xl font-bold">{title}</h3>
+          <div className="flex flex-1 items-center justify-center">
+            <Logo width={48} height={48} />
           </div>
         </div>
       )}
       <div className="p-6">
-        <span className="rounded-full border px-3 py-1 text-xs">
-          {category?.name}
-        </span>
+        <span className="rounded-full border px-3 py-1 text-xs">{category?.name}</span>
 
         <h2 className="mt-4 text-xl font-semibold">{title}</h2>
 
         <p className="mt-3 text-sm text-gray-500">{description}</p>
 
         <div className="mt-4 flex items-center justify-between">
-          {readTime && (
-            <span className="text-sm text-gray-500">{readTime}</span>
-          )}
+          {readTime && <span className="text-sm text-gray-500">{readTime}</span>}
 
-          <Link
-            href={`/blog/${slug}`}
-            className="font-medium"
-          >
+          <Link href={`/blog/${slug}`} className="font-medium">
             Continue Reading →
           </Link>
         </div>
