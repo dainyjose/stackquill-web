@@ -140,6 +140,49 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
     }
   };
 
+  const handleSaveDraft = async () => {
+    setStatus("DRAFT");
+
+    if (!validateForm()) {
+      return;
+    }
+
+    try {
+      if (isEditMode) {
+        await updateBlog(initialData.slug, {
+          title,
+          slug,
+          description,
+          metaTitle,
+          metaDescription,
+          content,
+          categoryId,
+          coverImage,
+          featured,
+          status: "DRAFT",
+        });
+      } else {
+        await createBlog({
+          title,
+          slug,
+          description,
+          metaTitle,
+          metaDescription,
+          content,
+          categoryId,
+          coverImage,
+          featured,
+          status: "DRAFT",
+        });
+      }
+
+      router.push("/admin/blogs");
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
@@ -315,7 +358,7 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
 
       {/* Actions */}
       <div className="flex justify-end gap-4">
-        <button type="button" className="rounded-lg border px-6 py-3">
+        <button type="button" className="rounded-lg border px-6 py-3" onClick={handleSaveDraft}>
           Save Draft
         </button>
 
