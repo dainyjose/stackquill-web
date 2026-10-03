@@ -4,16 +4,15 @@ import { togglePublished } from "@/actions/blog";
 
 interface Props {
   slug: string;
-  published: boolean;
+  status: "DRAFT" | "PUBLISHED" | "ARCHIVED";
 }
 
-export default function PublishToggleButton({ slug, published }: Props) {
+export default function PublishToggleButton({ slug, status }: Props) {
+  const isPublished = status === "PUBLISHED";
+
   return (
-    <button
-      onClick={() => togglePublished(slug)}
-      className="rounded-lg border px-4 py-2"
-    >
-      {published ? "Unpublish" : "Publish"}
+    <button onClick={() => togglePublished(slug)} className="rounded-lg border px-4 py-2">
+      {isPublished ? "Unpublish" : "Publish"}
     </button>
   );
 }
