@@ -41,11 +41,13 @@ export default async function EditBlogPage({ params }: EditBlogPageProps) {
           title: post.title,
           slug: post.slug,
           description: post.description,
+          metaTitle: post.seoTitle ?? "",
+          metaDescription: post.seoDescription ?? "",
           categoryId: post.categoryId,
           coverImage: post.coverImage ?? "",
           content: post.content,
           featured: post.featured,
-          published: post.published,
+          status: post.status,
         }}
       />
     </div>
