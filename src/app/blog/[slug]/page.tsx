@@ -93,7 +93,7 @@ export default async function BlogDetailsPage({ params }: BlogDetailsPageProps) 
                 year: "numeric",
                 month: "long",
                 day: "numeric",
-              }).format(post.createdAt)}
+              }).format(post.originalPublishedAt ?? post.publishedAt ?? post.createdAt)}
             </span>
             <span>•</span>
             <span>{post.readTime}</span>

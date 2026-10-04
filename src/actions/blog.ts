@@ -18,6 +18,7 @@ interface CreateBlogPayload {
 
   featured: boolean;
   status: "DRAFT" | "PUBLISHED" | "ARCHIVED";
+  originalPublishedAt?: string;
 }
 
 export async function createBlog(data: CreateBlogPayload) {
@@ -36,6 +37,7 @@ export async function createBlog(data: CreateBlogPayload) {
       seoTitle: data.metaTitle || null,
       seoDescription: data.metaDescription || null,
       publishedAt: data.status === "PUBLISHED" ? new Date() : null,
+      originalPublishedAt: data.originalPublishedAt ? new Date(data.originalPublishedAt) : null,
     },
   });
 
@@ -75,6 +77,7 @@ export async function updateBlog(slug: string, data: CreateBlogPayload) {
       seoTitle: data.metaTitle || null,
       seoDescription: data.metaDescription || null,
       publishedAt: data.status === "PUBLISHED" ? (existingBlog.publishedAt ?? new Date()) : null,
+      originalPublishedAt: data.originalPublishedAt ? new Date(data.originalPublishedAt) : null,
     },
   });
 

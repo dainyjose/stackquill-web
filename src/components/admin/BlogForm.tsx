@@ -27,6 +27,7 @@ interface BlogFormProps {
     content: string;
     featured: boolean;
     status: "DRAFT" | "PUBLISHED" | "ARCHIVED";
+    originalPublishedAt?: string;
   };
 }
 
@@ -44,6 +45,9 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
   const [metaTitle, setMetaTitle] = useState(initialData?.metaTitle ?? "");
 
   const [metaDescription, setMetaDescription] = useState(initialData?.metaDescription ?? "");
+  const [originalPublishedAt, setOriginalPublishedAt] = useState(
+    initialData?.originalPublishedAt ?? ""
+  );
   const [uploading, setUploading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const router = useRouter();
@@ -111,6 +115,7 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
           coverImage,
           featured,
           status,
+          originalPublishedAt,
         });
       } else {
         await createBlog({
@@ -124,6 +129,7 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
           coverImage,
           featured,
           status,
+          originalPublishedAt,
         });
       }
 
@@ -160,6 +166,7 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
           coverImage,
           featured,
           status: "DRAFT",
+          originalPublishedAt,
         });
       } else {
         await createBlog({
@@ -173,6 +180,7 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
           coverImage,
           featured,
           status: "DRAFT",
+          originalPublishedAt,
         });
       }
 
@@ -328,7 +336,20 @@ export default function BlogForm({ categories, initialData }: BlogFormProps) {
           </div>
         </div>
       </div>
+      <div>
+        <label className="mb-2 block font-medium">Original Published Date</label>
 
+        <input
+          type="date"
+          value={originalPublishedAt}
+          onChange={e => setOriginalPublishedAt(e.target.value)}
+          className="w-full rounded-lg border p-3"
+        />
+
+        <p className="mt-1 text-sm text-gray-500">
+          Use this when migrating an article previously published elsewhere.
+        </p>
+      </div>
       {/* Publishing */}
       <div className="rounded-xl border p-6">
         <h2 className="mb-6 text-xl font-semibold">Publishing Options</h2>

@@ -48,6 +48,9 @@ export default async function EditBlogPage({ params }: EditBlogPageProps) {
           content: post.content,
           featured: post.featured,
           status: post.status,
+          originalPublishedAt: post.originalPublishedAt
+            ? post.originalPublishedAt.toISOString().split("T")[0]
+            : "",
         }}
       />
     </div>
