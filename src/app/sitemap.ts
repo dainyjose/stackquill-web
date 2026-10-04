@@ -3,35 +3,34 @@ import { siteConfig } from "@/lib/site";
 import { prisma } from "@/lib/prisma";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const posts = await prisma.blog.findMany({
+    where: {
+      status: "PUBLISHED",
+    },
+  });
 
-    const posts = await prisma.blog.findMany({
-        where: {
-            published: true,
-        },
-    });
+  const blogRoutes = posts.map(post => ({
+    url: `${siteConfig.url}/blog/${post.slug}`,
+    lastModified: post.updatedAt,
+  }));
 
-    const blogRoutes = posts.map((post) => ({
-        url: `${siteConfig.url}/blog/${post.slug}`,
-        lastModified: post.updatedAt,
-    }));
-
-    return [
-        {
-            url: siteConfig.url,
-            lastModified: new Date(),
-        },
-        {
-            url: `${siteConfig.url}/blog`,
-            lastModified: new Date(),
-        },
-        {
-            url: `${siteConfig.url}/about`,
-            lastModified: new Date(),
-        },
-        {
-            url: `${siteConfig.url}/contact`,
-            lastModified: new Date(),
-        },
-        ...blogRoutes,
-    ];
+  return [
+    {
+      url: siteConfig.url,
+      lastModified: new Date(),
+    },
+    {
+      url: `${siteConfig.url}/blog`,
+      lastModified: new Date(),
+    },
+    {
+      url: `${siteConfig.url}/about`,
+      lastModified: new Date(),
+    },
+    {
+      url: `${siteConfig.url}/contact`,
+      lastModified: new Date(),
+    },
+    ...blogRoutes,
+  ];
 }

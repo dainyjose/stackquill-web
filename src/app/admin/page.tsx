@@ -1,38 +1,32 @@
 import { prisma } from "@/lib/prisma";
 
 export default async function AdminPage() {
-  const [
-    totalPosts,
-    publishedPosts,
-    draftPosts,
-    totalCategories,
-    totalViews,
-    mostViewedPosts,
-  ] = await Promise.all([
-    prisma.blog.count(),
+  const [totalPosts, publishedPosts, draftPosts, totalCategories, totalViews, mostViewedPosts] =
+    await Promise.all([
+      prisma.blog.count(),
 
-    prisma.blog.count({
-      where: { published: true },
-    }),
+      prisma.blog.count({
+        where: { status: "PUBLISHED" },
+      }),
 
-    prisma.blog.count({
-      where: { published: false },
-    }),
-    prisma.category.count(),
+      prisma.blog.count({
+        where: { status: "DRAFT" },
+      }),
+      prisma.category.count(),
 
-    prisma.blog.aggregate({
-      _sum: {
-        views: true,
-      },
-    }),
+      prisma.blog.aggregate({
+        _sum: {
+          views: true,
+        },
+      }),
 
-    prisma.blog.findMany({
-      orderBy: {
-        views: "desc",
-      },
-      take: 5,
-    }),
-  ]);
+      prisma.blog.findMany({
+        orderBy: {
+          views: "desc",
+        },
+        take: 5,
+      }),
+    ]);
 
   return (
     <>
@@ -62,9 +56,7 @@ export default async function AdminPage() {
         <div className="rounded-xl border p-6">
           <h2>Total Views</h2>
 
-          <p className="mt-2 text-3xl font-bold">
-            {totalViews._sum.views ?? 0}
-          </p>
+          <p className="mt-2 text-3xl font-bold">{totalViews._sum.views ?? 0}</p>
         </div>
       </div>
 
@@ -72,11 +64,8 @@ export default async function AdminPage() {
         <h2 className="mb-4 text-xl font-semibold">Most Viewed Posts</h2>
 
         <div className="space-y-3">
-          {mostViewedPosts.map((post) => (
-            <div
-              key={post.id}
-              className="flex justify-between "
-            >
+          {mostViewedPosts.map(post => (
+            <div key={post.id} className="flex justify-between ">
               <span>{post.title}</span>
               <span>{post.views} views</span>
             </div>

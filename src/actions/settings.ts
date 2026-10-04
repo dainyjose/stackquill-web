@@ -3,96 +3,99 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { SettingsData } from "@/types/settings";
+import { requireAdmin } from "@/lib/requireAdmin";
 
 export async function saveSettings(data: SettingsData) {
-    const existing = await prisma.setting.findFirst();
+  await requireAdmin();
 
-    if (existing) {
-        await prisma.setting.update({
-            where: {
-                id: existing.id,
-            },
-            data: {
-                siteName: data.siteName,
-                siteTagline: data.siteTagline,
-                siteDescription: data.siteDescription,
-                siteUrl: data.siteUrl,
+  const existing = await prisma.setting.findFirst();
 
-                heroBadge: data.heroBadge,
-                heroTitle: data.heroTitle,
-                heroDescription: data.heroDescription,
-                heroTopics: data.heroTopics,
+  if (existing) {
+    await prisma.setting.update({
+      where: {
+        id: existing.id,
+      },
+      data: {
+        siteName: data.siteName,
+        siteTagline: data.siteTagline,
+        siteDescription: data.siteDescription,
+        siteUrl: data.siteUrl,
 
-                aboutTitle: data.aboutTitle,
-                aboutContent: data.aboutContent,
+        heroBadge: data.heroBadge,
+        heroTitle: data.heroTitle,
+        heroDescription: data.heroDescription,
+        heroTopics: data.heroTopics,
 
-                logoLight: data.logoLight,
-                logoDark: data.logoDark,
-                favicon: data.favicon,
+        aboutTitle: data.aboutTitle,
+        aboutContent: data.aboutContent,
 
-                email: data.email,
+        logoLight: data.logoLight,
+        logoDark: data.logoDark,
+        favicon: data.favicon,
 
-                githubUrl: data.githubUrl,
-                linkedinUrl: data.linkedinUrl,
-                twitterUrl: data.twitterUrl,
-                devtoUrl: data.devtoUrl,
-                mediumUrl: data.mediumUrl,
-                hashnodeUrl: data.hashnodeUrl,
+        email: data.email,
 
-                metaTitle: data.metaTitle,
-                metaDescription: data.metaDescription,
-                metaKeywords: data.metaKeywords,
-                googleAnalyticsId: data.googleAnalyticsId,
-                googleSiteVerification: data.googleSiteVerification,
+        githubUrl: data.githubUrl,
+        linkedinUrl: data.linkedinUrl,
+        twitterUrl: data.twitterUrl,
+        devtoUrl: data.devtoUrl,
+        mediumUrl: data.mediumUrl,
+        hashnodeUrl: data.hashnodeUrl,
 
-                copyright: data.copyright,
-            },
-        });
-    } else {
-        await prisma.setting.create({
-            data: {
-                siteName: data.siteName,
-                siteTagline: data.siteTagline,
-                siteDescription: data.siteDescription,
-                siteUrl: data.siteUrl,
+        metaTitle: data.metaTitle,
+        metaDescription: data.metaDescription,
+        metaKeywords: data.metaKeywords,
+        googleAnalyticsId: data.googleAnalyticsId,
+        googleSiteVerification: data.googleSiteVerification,
 
-                heroBadge: data.heroBadge,
-                heroTitle: data.heroTitle,
-                heroDescription: data.heroDescription,
+        copyright: data.copyright,
+      },
+    });
+  } else {
+    await prisma.setting.create({
+      data: {
+        siteName: data.siteName,
+        siteTagline: data.siteTagline,
+        siteDescription: data.siteDescription,
+        siteUrl: data.siteUrl,
 
-                aboutTitle: data.aboutTitle,
-                aboutContent: data.aboutContent,
+        heroBadge: data.heroBadge,
+        heroTitle: data.heroTitle,
+        heroDescription: data.heroDescription,
 
-                logoLight: data.logoLight,
-                logoDark: data.logoDark,
-                favicon: data.favicon,
+        aboutTitle: data.aboutTitle,
+        aboutContent: data.aboutContent,
 
-                email: data.email,
+        logoLight: data.logoLight,
+        logoDark: data.logoDark,
+        favicon: data.favicon,
 
-                githubUrl: data.githubUrl,
-                linkedinUrl: data.linkedinUrl,
-                twitterUrl: data.twitterUrl,
-                devtoUrl: data.devtoUrl,
-                mediumUrl: data.mediumUrl,
-                hashnodeUrl: data.hashnodeUrl,
+        email: data.email,
 
-                metaTitle: data.metaTitle,
-                metaDescription: data.metaDescription,
-                metaKeywords: data.metaKeywords,
-                googleAnalyticsId: data.googleAnalyticsId,
-                googleSiteVerification: data.googleSiteVerification,
+        githubUrl: data.githubUrl,
+        linkedinUrl: data.linkedinUrl,
+        twitterUrl: data.twitterUrl,
+        devtoUrl: data.devtoUrl,
+        mediumUrl: data.mediumUrl,
+        hashnodeUrl: data.hashnodeUrl,
 
-                copyright: data.copyright,
-            },
-        });
-    }
+        metaTitle: data.metaTitle,
+        metaDescription: data.metaDescription,
+        metaKeywords: data.metaKeywords,
+        googleAnalyticsId: data.googleAnalyticsId,
+        googleSiteVerification: data.googleSiteVerification,
 
-    revalidatePath("/");
-    revalidatePath("/about");
-    revalidatePath("/blog");
-    revalidatePath("/admin/settings");
+        copyright: data.copyright,
+      },
+    });
+  }
 
-    return {
-        success: true,
-    };
+  revalidatePath("/");
+  revalidatePath("/about");
+  revalidatePath("/blog");
+  revalidatePath("/admin/settings");
+
+  return {
+    success: true,
+  };
 }

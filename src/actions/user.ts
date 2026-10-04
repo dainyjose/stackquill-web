@@ -2,49 +2,48 @@
 
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/requireAdmin";
 
 interface ChangePasswordPayload {
-    currentPassword: string;
-    newPassword: string;
+  currentPassword: string;
+  newPassword: string;
 }
 
-export async function changePassword(
-    data: ChangePasswordPayload,
-) {
-    const user = await prisma.user.findUnique({
-        where: {
-            username: "admin",
-        },
-    });
+export async function changePassword(data: ChangePasswordPayload) {
+  const session = await requireAdmin();
 
-    if (!user) {
-        throw new Error("User not found");
-    }
+  if (!session.user?.name) {
+    throw new Error("Unauthorized");
+  }
 
-    const isValid = await bcrypt.compare(
-        data.currentPassword,
-        user.passwordHash,
-    );
+  const user = await prisma.user.findUnique({
+    where: {
+      username: session.user.name,
+    },
+  });
 
-    if (!isValid) {
-        throw new Error("Current password is incorrect");
-    }
+  if (!user) {
+    throw new Error("User not found");
+  }
 
-    const passwordHash = await bcrypt.hash(
-        data.newPassword,
-        10,
-    );
+  const isValid = await bcrypt.compare(data.currentPassword, user.passwordHash);
 
-    await prisma.user.update({
-        where: {
-            id: user.id,
-        },
-        data: {
-            passwordHash,
-        },
-    });
+  if (!isValid) {
+    throw new Error("Current password is incorrect");
+  }
 
-    return {
-        success: true,
-    };
+  const passwordHash = await bcrypt.hash(data.newPassword, 10);
+
+  await prisma.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      passwordHash,
+    },
+  });
+
+  return {
+    success: true,
+  };
 }

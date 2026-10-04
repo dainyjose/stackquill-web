@@ -11,15 +11,13 @@ export default async function BlogsPage() {
       <div className="mb-8 flex items-center justify-between">
         <h1 className="text-4xl font-bold">Blogs</h1>
 
-        <Link
-          href="/admin/blogs/new"
-          className="rounded-lg border px-4 py-2"
-        >
+        <Link href="/admin/blogs/new" className="rounded-lg border px-4 py-2">
           New Blog
         </Link>
       </div>
+
       <div className="rounded-xl border">
-        {posts.map((post) => (
+        {posts?.map(post => (
           <div
             key={post?.slug}
             className="flex items-center justify-between border-b p-4 last:border-b-0"
@@ -27,24 +25,19 @@ export default async function BlogsPage() {
             <div>
               <h3 className="font-semibold">{post?.title}</h3>
 
-              <p className="text-sm text-muted-foreground">
-                {post?.category?.name}
-              </p>
-              <span>{post.published ? "Published" : "Draft"}</span>
+              <p className="text-sm text-muted-foreground">{post?.category?.name}</p>
+
+              <span>{post?.status === "PUBLISHED" ? "Published" : "Draft"}</span>
             </div>
-            <PublishToggleButton
-              slug={post.slug}
-              published={post.published}
-            />
+
+            <PublishToggleButton slug={post?.slug} status={post.status} />
+
             <div className="flex gap-2">
-              <Link
-                href={`/admin/blogs/${post.slug}`}
-                className="rounded-lg border px-4 py-2"
-              >
+              <Link href={`/admin/blogs/${post?.slug}`} className="rounded-lg border px-4 py-2">
                 Edit
               </Link>
 
-              <DeleteBlogButton slug={post.slug} />
+              <DeleteBlogButton slug={post?.slug} />
             </div>
           </div>
         ))}
