@@ -5,6 +5,12 @@ import PublishToggleButton from "@/components/admin/PublishToggleButton";
 
 export default async function BlogsPage() {
   const posts = await getAllPosts();
+  const formatDate = (date: Date | string) =>
+    new Date(date).toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
 
   return (
     <div className="mx-auto w-full">
@@ -70,7 +76,9 @@ export default async function BlogsPage() {
                   <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
                     {post.description}
                   </p>
-
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    Published date: {formatDate(post.originalPublishedAt ?? post.createdAt)}
+                  </p>
                   <p className="mt-2 text-xs text-muted-foreground lg:hidden">
                     Category: {post.category?.name ?? "Uncategorized"}
                   </p>
