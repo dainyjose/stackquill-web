@@ -1,6 +1,7 @@
 "use client";
 
 import { Hash } from "lucide-react";
+import { getCategoryColor } from "@/lib/category-colors";
 
 interface Category {
   id: string;
@@ -11,15 +12,6 @@ interface Category {
 interface CategoryListProps {
   categories: Category[];
 }
-
-const colors = [
-  "bg-blue-500/10 text-blue-600 dark:text-blue-400",
-  "bg-violet-500/10 text-violet-600 dark:text-violet-400",
-  "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-  "bg-amber-500/10 text-amber-600 dark:text-amber-400",
-  "bg-rose-500/10 text-rose-600 dark:text-rose-400",
-  "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400",
-];
 
 export default function CategoryList({ categories }: CategoryListProps) {
   return (
@@ -37,9 +29,7 @@ export default function CategoryList({ categories }: CategoryListProps) {
               className="flex min-w-0 items-center gap-3 rounded-lg border border-border p-3 transition-colors hover:bg-muted/40"
             >
               <div
-                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
-                  colors[index % colors.length]
-                }`}
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${getCategoryColor(index)}`}
               >
                 <Hash size={17} />
               </div>
