@@ -13,7 +13,7 @@ interface Blog {
     id: string;
     name: string;
     slug: string;
-  };
+  } | null;
 }
 
 interface BlogSearchProps {
@@ -24,13 +24,15 @@ export default function BlogSearch({ posts }: BlogSearchProps) {
   const [query, setQuery] = useState("");
 
   const filteredPosts = useMemo(() => {
-    const search = query.toLowerCase();
+    const search = query.trim().toLowerCase();
+
+    if (!search) return posts;
 
     return posts.filter(
-      (post) =>
+      post =>
         post.title.toLowerCase().includes(search) ||
         post.description.toLowerCase().includes(search) ||
-        post.category.name.toLowerCase().includes(search),
+        post.category?.name.toLowerCase().includes(search)
     );
   }, [posts, query]);
 
@@ -40,29 +42,26 @@ export default function BlogSearch({ posts }: BlogSearchProps) {
         <input
           type="text"
           placeholder="Search articles..."
+          aria-label="Search articles"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="mb-2 w-full rounded-lg border p-3"
+          onChange={e => setQuery(e.target.value)}
+          className="mb-2 w-full rounded-lg border border-border bg-card p-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
         />
 
         {filteredPosts.length === 0 ? (
-          <div className="mt-10 text-center">No articles found.</div>
+          <div className="mt-10 text-center text-muted-foreground">No articles found.</div>
         ) : (
-          query?.length > 0 && (
-            <p className="mb-6 text-sm text-gray-500">
-              {filteredPosts.length}{" "}
-              {filteredPosts.length === 1 ? "article" : "articles"} found
+          query.trim().length > 0 && (
+            <p className="mb-6 text-sm text-muted-foreground">
+              {filteredPosts.length} {filteredPosts.length === 1 ? "article" : "articles"} found
             </p>
           )
         )}
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {filteredPosts.map((post) => (
-          <BlogCard
-            key={post.slug}
-            {...post}
-          />
+      <div className="grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {filteredPosts.map(post => (
+          <BlogCard key={post.slug} {...post} />
         ))}
       </div>
     </>
