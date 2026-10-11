@@ -124,8 +124,16 @@ export async function getLatestPosts() {
       category: true,
     },
     take: 3,
-    orderBy: {
-      createdAt: "desc",
-    },
+    orderBy: [
+      {
+        originalPublishedAt: {
+          sort: "desc",
+          nulls: "last",
+        },
+      },
+      {
+        createdAt: "desc",
+      },
+    ],
   });
 }
