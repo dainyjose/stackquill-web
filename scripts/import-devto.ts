@@ -106,8 +106,17 @@ async function main() {
   const apiBaseUrl = process.env.DEV_API_BASE_URL;
   const devToUsername = process.env.DEVTO_USERNAME;
 
+  if (!devToUsername) {
+    throw new Error("Missing DEVTO_USERNAME environment variable");
+  }
+
+  if (!apiBaseUrl) {
+    throw new Error("Missing DEV_API_BASE_URL environment variable");
+  }
+  const API_BASE = apiBaseUrl.replace(/\/$/, "");
+
   const articles = await fetchJson<DevToArticle[]>(
-    `${apiBaseUrl?.replace(/\/$/, "")}/articles?username=${encodeURIComponent(devToUsername)}&per_page=100`
+    `${API_BASE}/articles?username=${encodeURIComponent(devToUsername)}&per_page=100`
   );
 
   console.log(`Found ${articles.length} Dev.to articles.`);

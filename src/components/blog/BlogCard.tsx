@@ -11,7 +11,7 @@ interface BlogCardProps {
     id: string;
     name: string;
     slug: string;
-  };
+  } | null;
   readTime?: string;
   coverImage?: string | null;
   featured?: boolean;
@@ -62,14 +62,17 @@ export default function BlogCard({
       {/* Content */}
       <div className="flex flex-1 flex-col p-4 sm:p-5">
         {/* Category */}
-        <div className="mb-3">
-          <Link
-            href={`/topics/${category.slug}`}
-            className="inline-flex max-w-full items-center rounded-md border border-border bg-muted/40 px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-          >
-            <span className="truncate">{category.name}</span>
-          </Link>
-        </div>
+
+        {category && (
+          <div className="mb-3">
+            <Link
+              href={`/topics/${category.slug}`}
+              className="inline-flex max-w-full items-center rounded-md border border-border bg-muted/40 px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              <span className="truncate">{category.name}</span>
+            </Link>
+          </div>
+        )}
 
         {/* Fixed title area keeps descriptions aligned */}
         <h2 className="line-clamp-2 min-h-12 text-base font-semibold leading-6 tracking-tight text-foreground transition-colors group-hover:text-foreground sm:text-lg">
