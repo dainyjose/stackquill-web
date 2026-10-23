@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<p align="center">
+  <picture>
+    <source
+      media="(prefers-color-scheme: dark)"
+      srcset="public/logo/stackquill-logo-light.png"
+    />
+    <source
+      media="(prefers-color-scheme: light)"
+      srcset="public/logo/stackquill-logo-dark.png"
+    />
+    <img
+      src="public/logo/stackquill-logo-dark.png"
+      alt="Stackquill Logo"
+      width="100"
+    />
+  </picture>
+</p>
 
-## Getting Started
+<h1 align="center">Stackquill</h1>
 
-First, run the development server:
+<p align="center">
+  A modern blogging platform for developers to publish,
+  organize, and share technical knowledge.
+</p>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**Stackquill is a full-stack blogging platform built with Next.js, TypeScript, Prisma, and PostgreSQL. It provides a clean reading experience, structured content organization, SEO metadata, and content management capabilities.**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Blog Publishing** — Create, edit, and publish technical articles.
+- **Content Organization** — Organize articles using categories.
+- **SEO Metadata** — Support for page metadata and Open Graph metadata.
+- **Responsive Design** — Access content across desktop and mobile devices.
+- **Content Management** — Manage articles and categories through an administrative interface.
+- **Publishing Workflow** — Support for draft, published, and archived articles.
+- **Site Configuration** — Manage website settings and configurable content.
+- **Contact Management** — Receive and manage messages submitted through the website.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Tech Stack
 
-## Learn More
+| Technology | Purpose |
+|---|---|
+| Next.js | Full-stack web framework |
+| React | User interface |
+| TypeScript | Type-safe development |
+| Prisma ORM | Database access and schema management |
+| PostgreSQL | Relational database |
 
-To learn more about Next.js, take a look at the following resources:
+## Project Goals
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Stackquill aims to provide a practical, maintainable platform for publishing technical articles while exploring modern full-stack web development, database management, content workflows, and search engine optimization.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Author
 
-## Deploy on Vercel
+**Dainy Jose**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- GitHub: [@dainyjose](https://github.com/dainyjose)
+- Portfolio: [dainyjose.github.io/my-portfolio](https://dainyjose.github.io/my-portfolio)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+Built to make sharing technical knowledge simpler.
