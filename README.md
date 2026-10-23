@@ -32,13 +32,24 @@
 ## Preview
 
 <p align="center">
-  <a href="https://your-live-domain.com">
-    <img
-      src="docs/images/stackquill-preview.png"
-      alt="Stackquill website preview"
-      width="100%"
-    />
-  </a>
+  <img
+    src="public/preview/stackquill-preview.png"
+    width="32%"
+    height="220"
+    alt="Stackquill Home Page"
+  />
+  <img
+    src="public/preview/stackquill-blogs-preview.png"
+    width="32%"
+    height="220"
+    alt="Stackquill Blogs Page"
+  />
+  <img
+    src="public/preview/stackquill-aboutme-preview.png"
+    width="32%"
+    height="220"
+    alt="Stackquill About Page"
+  />
 </p>
 
 ## Features
@@ -54,13 +65,13 @@
 
 ## Tech Stack
 
-| Technology | Purpose |
-|---|---|
-| Next.js | Full-stack web framework |
-| React | User interface |
-| TypeScript | Type-safe development |
+| Technology | Purpose                               |
+| ---------- | ------------------------------------- |
+| Next.js    | Full-stack web framework              |
+| React      | User interface                        |
+| TypeScript | Type-safe development                 |
 | Prisma ORM | Database access and schema management |
-| PostgreSQL | Relational database |
+| PostgreSQL | Relational database                   |
 
 ## Project Goals
 
