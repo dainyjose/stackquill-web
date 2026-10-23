@@ -1,4 +1,4 @@
-<p align="center">
+ <p align="center">
   <picture>
     <source
       media="(prefers-color-scheme: dark)"
@@ -23,7 +23,23 @@
   organize, and share technical knowledge.
 </p>
 
-**Stackquill is a full-stack blogging platform built with Next.js, TypeScript, Prisma, and PostgreSQL. It provides a clean reading experience, structured content organization, SEO metadata, and content management capabilities.**
+<p align="center">
+  <a href="https://stackquill-web.vercel.app/">Live Demo</a>
+</p>
+
+**Stackquill** is a full-stack blogging platform built with Next.js, TypeScript, Prisma, and PostgreSQL. It provides a clean reading experience, structured content organization, SEO metadata, and content management capabilities.
+
+## Preview
+
+<p align="center">
+  <a href="https://your-live-domain.com">
+    <img
+      src="docs/images/stackquill-preview.png"
+      alt="Stackquill website preview"
+      width="100%"
+    />
+  </a>
+</p>
 
 ## Features
 
