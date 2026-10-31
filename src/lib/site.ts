@@ -1,12 +1,11 @@
 export const siteConfig = {
-    name: "StackQuill",
-    title: "StackQuill",
-    description:
-        "Learning, Building, Sharing",
+  name: "StackQuill",
+  title: "StackQuill",
+  description: "Learning, Building, Sharing",
 
-    url: "https://your-domain.com",
+  url: "https://stackquill-web.vercel.app",
 
-    ogImage: "/images/og-image.png",
+  ogImage: "/images/StackQuill.png",
 
-    author: "Dainy Jose",
+  author: "Dainy Jose",
 };
