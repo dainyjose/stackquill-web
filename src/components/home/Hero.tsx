@@ -18,7 +18,7 @@ export default async function Hero() {
     "Practical tutorials, real-world projects, and engineering lessons for developers who love building.";
 
   return (
-    <section className="relative isolate flex min-h-[75vh] items-center justify-center overflow-hidden px-5 py-20 sm:px-6 sm:py-24">
+    <section className="relative isolate flex min-h-[65vh] items-center justify-center overflow-hidden px-5 py-12 sm:px-6 sm:py-16">
       {/* Subtle background glow */}
       <div
         aria-hidden="true"
@@ -88,7 +88,7 @@ export default async function Hero() {
         <Link
           href="/blog"
           aria-label="Explore articles"
-          className="mt-10 inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          className="mt-6 inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         >
           <ArrowDown size={16} />
         </Link>

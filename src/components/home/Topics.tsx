@@ -9,7 +9,7 @@ export default async function Topics() {
   if (categories.length === 0) return null;
 
   return (
-    <section className="mx-auto max-w-6xl px-6 py-16">
+    <section className="mx-auto max-w-6xl px-6 pt-8 pb-12">
       {/* Header */}
       <div className="mb-8 flex items-end justify-between gap-4">
         <div>
