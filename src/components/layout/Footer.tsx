@@ -11,9 +11,21 @@ export default async function Footer() {
   const portfolioUrl = "https://dainyjose.github.io/my-portfolio";
 
   const socialLinks = [
-    { label: "LinkedIn", href: settings?.linkedinUrl, icon: FaLinkedinIn },
-    { label: "GitHub", href: settings?.githubUrl, icon: FaGithub },
-    { label: "Dev.to", href: settings?.devtoUrl, icon: FaDev },
+    {
+      label: "LinkedIn",
+      href: settings?.linkedinUrl ?? undefined,
+      icon: FaLinkedinIn,
+    },
+    {
+      label: "GitHub",
+      href: settings?.githubUrl ?? undefined,
+      icon: FaGithub,
+    },
+    {
+      label: "Dev.to",
+      href: settings?.devtoUrl ?? undefined,
+      icon: FaDev,
+    },
     {
       label: "Email",
       href: settings?.email ? `mailto:${settings.email}` : undefined,
