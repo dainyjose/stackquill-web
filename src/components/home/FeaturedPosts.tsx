@@ -9,7 +9,7 @@ export default async function FeaturedPosts() {
   }
 
   return (
-    <section className="mx-auto max-w-6xl px-6 py-16">
+    <section className="mx-auto max-w-6xl px-6 pt-8 pb-12">
       <div className="mb-8">
         <div className="flex items-center gap-2">
           <span className="rounded-full bg-yellow-100 px-3 py-1 text-xs font-medium dark:bg-yellow-900/30">
@@ -19,17 +19,12 @@ export default async function FeaturedPosts() {
           <h2 className="text-3xl font-bold">Featured Posts</h2>
         </div>
 
-        <p className="mt-2 text-gray-500">
-          Recommended articles and deep dives.
-        </p>
+        <p className="mt-2 text-gray-500">Recommended articles and deep dives.</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
-        {featuredPosts.map((post) => (
-          <BlogCard
-            key={post.slug}
-            {...post}
-          />
+        {featuredPosts.map(post => (
+          <BlogCard key={post.slug} {...post} />
         ))}
       </div>
     </section>
