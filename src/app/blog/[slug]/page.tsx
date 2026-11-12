@@ -12,6 +12,7 @@ import CodeBlock from "@/components/blog/CodeBlock";
 import ReadingProgressBar from "@/components/blog/ReadingProgressBar";
 import { incrementBlogViews } from "@/actions/blog";
 import Logo from "@/components/common/Logo";
+import BlogViewTracker from "@/components/blog/BlogViewTracker";
 interface BlogDetailsPageProps {
   params: Promise<{
     slug: string;
@@ -26,6 +27,8 @@ export async function generateMetadata({ params }: BlogDetailsPageProps): Promis
   if (!post) {
     return {};
   }
+  const canonicalUrl = `${siteConfig.url}/blog/${slug}`;
+  const publishedDate = post.originalPublishedAt ?? post.publishedAt ?? post.createdAt;
 
   return {
     title: post.title,
@@ -40,22 +43,33 @@ export async function generateMetadata({ params }: BlogDetailsPageProps): Promis
       },
     ],
 
+    alternates: {
+      canonical: canonicalUrl,
+    },
+
     openGraph: {
       title: post.title,
       description: post.description,
-
-      url: `${siteConfig.url}/blog/${slug}`,
-
+      url: canonicalUrl,
       type: "article",
-
-      images: post.coverImage ? [post.coverImage] : [siteConfig.ogImage],
+      publishedTime: publishedDate.toISOString(),
+      modifiedTime: post.updatedAt.toISOString(),
+      authors: [siteConfig.author],
+      section: post.category?.name,
+      tags: post.keywords,
+      images: [
+        {
+          url: post.coverImage || siteConfig.ogImage,
+          alt: post.title,
+        },
+      ],
     },
 
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: post.description,
-      images: post.coverImage ? [post.coverImage] : [siteConfig.ogImage],
+      images: [post.coverImage || siteConfig.ogImage],
     },
   };
 }
@@ -72,9 +86,35 @@ export default async function BlogDetailsPage({ params }: BlogDetailsPageProps) 
 
   const relatedPosts = await getRelatedPosts(post.slug, post.categoryId);
   const headings = extractHeadings(post.content);
+  const publishedDate = post.originalPublishedAt ?? post.publishedAt ?? post.createdAt;
 
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.description,
+    image: post.coverImage || siteConfig.ogImage,
+    datePublished: publishedDate.toISOString(),
+    dateModified: post.updatedAt.toISOString(),
+    author: {
+      "@type": "Person",
+      name: siteConfig.author,
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${siteConfig.url}/blog/${slug}`,
+    },
+  };
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleSchema).replace(/</g, "\\u003c"),
+        }}
+      />
+      <BlogViewTracker slug={slug} />
+
       <ReadingProgressBar />
       <article className="mx-auto max-w-4xl px-6 py-12">
         <div className="mb-8">

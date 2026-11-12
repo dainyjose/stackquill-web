@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/requireAdmin";
+import { headers } from "next/headers";
 
 interface CreateBlogPayload {
   title: string;
@@ -141,10 +142,29 @@ export async function togglePublished(slug: string) {
 }
 
 export async function incrementBlogViews(slug: string) {
-  const blog = await prisma.blog.update({
-    where: {
-      slug,
+  const headersList = await headers();
+  const userAgent = headersList.get("user-agent") || "";
+
+  const isBot = /bot|crawler|spider|googlebot|bingbot|yandex|baiduspider/i.test(userAgent);
+
+  if (isBot) {
+    return null;
+  }
+
+  const blog = await prisma.blog.findUnique({
+    where: { slug },
+    select: {
+      id: true,
+      status: true,
     },
+  });
+
+  if (!blog || blog.status !== "PUBLISHED") {
+    return null;
+  }
+
+  const updatedBlog = await prisma.blog.update({
+    where: { id: blog.id },
     data: {
       views: {
         increment: 1,
@@ -155,5 +175,5 @@ export async function incrementBlogViews(slug: string) {
     },
   });
 
-  return blog.views;
+  return updatedBlog.views;
 }
