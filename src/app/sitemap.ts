@@ -1,4 +1,4 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/site";
 import { prisma } from "@/lib/prisma";
 
@@ -7,30 +7,34 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     where: {
       status: "PUBLISHED",
     },
+    select: {
+      slug: true,
+      updatedAt: true,
+    },
+    orderBy: {
+      updatedAt: "desc",
+    },
   });
 
-  const blogRoutes = posts.map(post => ({
+  const staticRoutes: MetadataRoute.Sitemap = [
+    {
+      url: siteConfig.url,
+    },
+    {
+      url: `${siteConfig.url}/blog`,
+    },
+    {
+      url: `${siteConfig.url}/about`,
+    },
+    {
+      url: `${siteConfig.url}/contact`,
+    },
+  ];
+
+  const blogRoutes: MetadataRoute.Sitemap = posts.map(post => ({
     url: `${siteConfig.url}/blog/${post.slug}`,
     lastModified: post.updatedAt,
   }));
 
-  return [
-    {
-      url: siteConfig.url,
-      lastModified: new Date(),
-    },
-    {
-      url: `${siteConfig.url}/blog`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${siteConfig.url}/about`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${siteConfig.url}/contact`,
-      lastModified: new Date(),
-    },
-    ...blogRoutes,
-  ];
+  return [...staticRoutes, ...blogRoutes];
 }
