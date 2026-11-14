@@ -4,11 +4,12 @@ import { ArrowUpRight, Mail } from "lucide-react";
 import { FaLinkedinIn, FaGithub, FaDev } from "react-icons/fa6";
 import Logo from "../common/Logo";
 
+const portfolioUrl = "https://dainyjose.github.io/my-portfolio";
+
 export default async function Footer() {
   const settings = await prisma.setting.findFirst();
-  const siteName = settings?.siteName ?? "StackQuill";
 
-  const portfolioUrl = "https://dainyjose.github.io/my-portfolio";
+  const siteName = settings?.siteName ?? "StackQuill";
 
   const socialLinks = [
     {
@@ -33,83 +34,97 @@ export default async function Footer() {
     },
   ].filter(link => link.href);
 
-  return (
-    <footer className="border-t border-border bg-background">
-      <div className="mx-auto max-w-6xl px-5 py-9 sm:px-6 sm:py-12">
-        {/* Branding */}
-        <div className="flex flex-col items-center text-center">
-          <Link href="/" className="flex items-center gap-2">
-            <Logo width={34} height={34} />
-            <span className="text-xl font-bold tracking-tight">{siteName}</span>
-          </Link>
+  const footerLinks = [
+    { href: "/blog", label: "Articles" },
+    { href: "/about", label: "About" },
+    { href: "/contact", label: "Contact" },
+  ];
 
-          <p className="mt-3 max-w-fit text-sm leading-6 text-muted-foreground">
-            Practical tutorials, real-world projects, and engineering insights for developers.
-          </p>
+  return (
+    <footer className="border-t border-border bg-card">
+      <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:px-10">
+        <div className="grid gap-12 md:grid-cols-[1.5fr_1fr] md:gap-16">
+          {/* Brand */}
+          <div className="max-w-lg">
+            <Link href="/" className="inline-flex items-center gap-3">
+              <Logo width={38} height={38} />
+
+              <span className="text-xl font-bold tracking-tight text-foreground">
+                {siteName}
+                <span className="text-primary">.</span>
+              </span>
+            </Link>
+
+            <p className="mt-5 text-sm leading-7 text-muted-foreground sm:text-base">
+              A space for learning, building, and sharing. Practical tutorials, real-world projects,
+              and thoughtful insights from the world of software development.
+            </p>
+
+            <p className="mt-5 text-sm font-medium tracking-wide text-primary">
+              Learning. Building. Sharing.
+            </p>
+          </div>
+
+          {/* Navigation and Social */}
+          <div className="grid grid-cols-2 gap-8 sm:grid-cols-2">
+            <div>
+              <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                Explore
+              </h2>
+
+              <nav aria-label="Footer navigation" className="mt-5 flex flex-col items-start gap-4">
+                {footerLinks.map(link => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="text-sm font-medium text-foreground transition-colors hover:text-primary"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
+            </div>
+
+            <div>
+              <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                Connect
+              </h2>
+
+              {socialLinks.length > 0 && (
+                <div className="mt-5 flex flex-col items-start gap-4">
+                  {socialLinks.map(({ label, href, icon: Icon }) => (
+                    <a
+                      key={label}
+                      href={href}
+                      target={label === "Email" ? undefined : "_blank"}
+                      rel={label === "Email" ? undefined : "noopener noreferrer"}
+                      className="inline-flex items-center gap-3 text-sm font-medium text-foreground transition-colors hover:text-primary"
+                    >
+                      <Icon size={16} />
+                      {label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
-        {/* Navigation */}
-        <nav
-          aria-label="Footer navigation"
-          className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm font-medium"
-        >
-          <Link
-            href="/blog"
-            className="text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Blog
-          </Link>
-          <Link
-            href="/about"
-            className="text-muted-foreground hover:text-foreground transition-colors"
-          >
-            About
-          </Link>
-          <Link
-            href="/contact"
-            className="text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Contact
-          </Link>
-        </nav>
+        {/* Bottom Bar */}
+        <div className="mt-14 flex flex-col gap-5 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs leading-5 text-muted-foreground">
+            © {new Date().getFullYear()} {siteName}. All rights reserved.
+          </p>
 
-        {/* Social Links */}
-        {socialLinks.length > 0 && (
-          <div className="mt-6 flex items-center justify-center gap-3">
-            {socialLinks.map(({ label, href, icon: Icon }) => (
-              <a
-                key={label}
-                href={href}
-                target={label === "Email" ? undefined : "_blank"}
-                rel={label === "Email" ? undefined : "noopener noreferrer"}
-                aria-label={label}
-                title={label}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-              >
-                <Icon size={17} />
-              </a>
-            ))}
-          </div>
-        )}
-
-        {/* Portfolio */}
-        <div className="mt-6 text-center">
           <a
             href={portfolioUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-sm font-medium text-foreground transition-colors hover:text-blue-500"
+            className="inline-flex items-center gap-2 text-sm font-medium text-foreground transition-colors hover:text-primary"
           >
             Built by Dainy Jose
             <ArrowUpRight size={15} />
           </a>
-        </div>
-
-        {/* Copyright */}
-        <div className="mt-8 border-t border-border pt-5 text-center">
-          <p className="text-xs leading-5 text-muted-foreground">
-            © {new Date().getFullYear()} {siteName}. All rights reserved.
-          </p>
         </div>
       </div>
     </footer>
