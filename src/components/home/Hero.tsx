@@ -1,6 +1,6 @@
-import { prisma } from "@/lib/prisma";
 import Link from "next/link";
-import { ArrowDown, ArrowRight, Code2 } from "lucide-react";
+import { ArrowRight, MoveUpRight, ArrowDownRight } from "lucide-react";
+import { prisma } from "@/lib/prisma";
 
 export default async function Hero() {
   const settings = await prisma.setting.findFirst();
@@ -12,86 +12,104 @@ export default async function Hero() {
       .filter(Boolean) ?? [];
 
   const siteName = settings?.siteName || "StackQuill";
-  const heroTitle = settings?.heroTitle || "Build better software, one insight at a time.";
+
+  const heroTitle = settings?.heroTitle || "Learning, building, and sharing what matters.";
+
   const heroDescription =
     settings?.heroDescription ||
-    "Practical tutorials, real-world projects, and engineering lessons for developers who love building.";
+    "Practical tutorials, engineering notes, and lessons from building software for the real world.";
 
   return (
-    <section className="relative isolate flex min-h-[65vh] items-center justify-center overflow-hidden px-5 py-12 sm:px-6 sm:py-16">
-      {/* Subtle background glow */}
+    <section className="relative overflow-hidden border-b border-border">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
-      >
-        <div className="absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-blue-500/10 blur-3xl sm:h-96 sm:w-96" />
-        <div className="absolute bottom-0 left-1/2 h-48 w-72 -translate-x-1/2 rounded-full bg-violet-500/5 blur-3xl" />
-      </div>
+        className="pointer-events-none absolute -right-40 -top-44 h-[34rem] w-[34rem] rounded-full bg-primary/[0.07] blur-3xl"
+      />
 
-      <div className="mx-auto flex w-full max-w-5xl flex-col items-center text-center">
-        {/* Badge */}
-        <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-4 py-2 text-xs font-medium text-muted-foreground shadow-sm backdrop-blur sm:text-sm">
-          <Code2 size={15} className="text-blue-500" />
-          <span>{settings?.heroBadge || "Software Engineering Blog"}</span>
-        </div>
-        {/* Site name */}
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground sm:text-sm">
-          {siteName}
-        </p>
-        {/* Headline */}
-        <h1 className="mt-5 max-w-4xl text-4xl font-extrabold leading-[1.12] tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
-          {heroTitle}
-        </h1>
-        {/* Description */}
-        <p className="mt-6 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-          {heroDescription}
-        </p>
-
-        {/* Topics */}
-        {topics.length > 0 && (
-          <div className="mt-7 flex max-w-3xl flex-wrap items-center justify-center gap-2">
-            {topics.map(topic => (
-              <span
-                key={topic}
-                className="rounded-full border border-border bg-card/70 px-3 py-1.5 text-xs font-medium text-muted-foreground sm:text-sm"
-              >
-                {topic}
-              </span>
-            ))}
+      <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 sm:px-8 sm:py-28 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16 lg:px-10 lg:py-32">
+        <div className="max-w-3xl">
+          <div className="mb-8 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary sm:text-sm">
+            <span className="h-px w-8 bg-primary" />
+            {settings?.heroBadge || "A developer's notebook"}
           </div>
-        )}
 
-        {/* Call to action */}
-        <div className="mt-9 flex w-full justify-center sm:w-auto">
-          <Link
-            href="/blog"
-            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-foreground px-6 py-3 text-sm font-semibold text-background transition-opacity hover:opacity-85 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"
-          >
-            Explore Articles
-            <ArrowRight size={17} />
-          </Link>
+          <p className="mb-5 text-sm font-semibold tracking-wide text-muted-foreground">
+            {siteName}
+            <span className="px-2 text-border">/</span>
+            Learning · Building · Sharing
+          </p>
+
+          <h1 className="text-4xl font-semibold leading-[1.08] tracking-[-0.045em] sm:text-5xl md:text-6xl lg:text-7xl">
+            {heroTitle}
+          </h1>
+
+          <p className="mt-7 max-w-2xl text-base leading-8 text-muted-foreground sm:text-lg sm:leading-9">
+            {heroDescription}
+          </p>
+
+          {topics.length > 0 && (
+            <div className="mt-8 flex flex-wrap gap-2">
+              {topics.map(topic => (
+                <span
+                  key={topic}
+                  className="rounded-full border border-border bg-card/70 px-3.5 py-1.5 text-xs font-medium text-muted-foreground sm:text-sm"
+                >
+                  {topic}
+                </span>
+              ))}
+            </div>
+          )}
+
+          <div className="mt-10 flex flex-wrap items-center gap-5">
+            <Link
+              href="/blog"
+              className="inline-flex min-h-12 items-center gap-3 rounded-full bg-foreground px-6 py-3 text-sm font-semibold text-background transition-transform hover:-translate-y-0.5"
+            >
+              Explore articles
+              <ArrowRight size={16} />
+            </Link>
+
+            <Link
+              href="/about"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors hover:text-primary"
+            >
+              About StackQuill
+              <MoveUpRight size={15} />
+            </Link>
+          </div>
         </div>
 
-        {/* Supporting highlights */}
-        <div className="mt-12 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground sm:text-sm">
-          <span>Practical tutorials</span>
-          <span aria-hidden="true" className="text-border">
-            •
-          </span>
-          <span>Real-world projects</span>
-          <span aria-hidden="true" className="text-border">
-            •
-          </span>
-          <span>Modern technologies</span>
+        <div className="relative mx-auto hidden w-full max-w-md lg:block">
+          <div className="absolute -inset-5 rounded-[2rem] border border-dashed border-border/80" />
+
+          <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-7 shadow-2xl shadow-foreground/[0.04]">
+            <div className="flex items-center justify-between border-b border-border pb-5">
+              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                Field notes
+              </span>
+
+              <span className="h-2 w-2 rounded-full bg-primary" />
+            </div>
+
+            <div className="py-10">
+              <div className="font-mono text-xs text-primary">{"<build />"}</div>
+
+              <p className="mt-5 text-4xl font-semibold leading-tight tracking-[-0.04em]">
+                Think clearly.
+                <br />
+                Build thoughtfully.
+                <br />
+                <span className="text-muted-foreground">Share openly.</span>
+              </p>
+            </div>
+
+            <div className="flex items-center justify-between border-t border-border pt-5">
+              <span className="text-xs text-muted-foreground">Notes from the process</span>
+
+              <ArrowDownRight size={18} className="text-primary" />
+            </div>
+          </div>
         </div>
-        {/* Scroll cue */}
-        <Link
-          href="/blog"
-          aria-label="Explore articles"
-          className="mt-6 inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-        >
-          <ArrowDown size={16} />
-        </Link>
       </div>
     </section>
   );
