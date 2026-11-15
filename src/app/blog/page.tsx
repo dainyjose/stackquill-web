@@ -117,7 +117,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
           <BlogSearch posts={postsWithCategories} />
 
           {totalPages > 1 && (
-            <div className="mt-14 border-t border-border pt-8">
+            <div className="mt-8  border-border pt-8">
               <Pagination currentPage={currentPage} totalPages={totalPages} />
             </div>
           )}
