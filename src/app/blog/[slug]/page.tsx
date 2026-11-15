@@ -3,13 +3,13 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, Clock3, Eye, CalendarDays } from "lucide-react";
+import { ArrowLeft, Clock3, Eye, CalendarDays, List } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import { siteConfig } from "@/lib/site";
 import { getPostBySlug, getRelatedPosts } from "@/lib/blog";
-import { extractHeadings } from "@/lib/toc";
+import { extractHeadings, slugifyHeading } from "@/lib/toc";
 import { incrementBlogViews } from "@/actions/blog";
 
 import Logo from "@/components/common/Logo";
@@ -120,12 +120,7 @@ export default async function BlogDetailsPage({ params }: BlogDetailsPageProps) 
   const renderMarkdownHeading = (Tag: "h2" | "h3") => {
     return function MarkdownHeading({ children }: { children?: ReactNode }) {
       const text = String(children ?? "");
-
-      const headingId = text
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, "")
-        .trim()
-        .replace(/\s+/g, "-");
+      const headingId = slugifyHeading(text);
 
       return (
         <Tag id={headingId} className="scroll-mt-28">
@@ -258,9 +253,12 @@ export default async function BlogDetailsPage({ params }: BlogDetailsPageProps) 
               {headings.length > 0 && (
                 <aside className="min-w-0 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:self-start lg:overflow-y-auto">
                   <div className="rounded-xl border border-border bg-card p-5 sm:p-6 lg:border-0 lg:bg-transparent lg:p-0">
-                    <p className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
-                      On this page
-                    </p>
+                    <div className="mb-4 flex items-center gap-2">
+                      <List size={15} className="text-primary" />
+                      <p className="text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
+                        On this page
+                      </p>
+                    </div>
 
                     <TableOfContents headings={headings} />
                   </div>
