@@ -62,62 +62,70 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
   return (
     <main className="min-h-screen">
-      <div className="mx-auto max-w-7xl px-5 pb-20 pt-14 sm:px-8 sm:pt-20 lg:px-10">
-        {/* Page Heading */}
-        <section className="border-b border-border pb-10 sm:pb-14">
-          <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
-            <div className="max-w-2xl">
-              <p className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+      <div className="mx-auto max-w-7xl px-5 pb-16 pt-14 sm:px-8 sm:pb-20 sm:pt-20 lg:px-10">
+        {/* Journal Header */}
+        <header className="border-b border-border pb-10 sm:pb-14">
+          <div className="grid gap-10 md:grid-cols-[1fr_auto] md:items-end">
+            <div className="max-w-3xl">
+              <p className="mb-5 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                <span className="h-px w-8 bg-primary" />
                 The StackQuill Journal
               </p>
 
-              <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+              <h1 className="text-4xl font-semibold leading-[1.08] tracking-[-0.05em] text-foreground sm:text-5xl lg:text-7xl">
                 Ideas worth
                 <br />
                 <span className="text-primary">building on.</span>
               </h1>
 
-              <p className="mt-6 max-w-xl text-base leading-8 text-muted-foreground sm:text-lg">
+              <p className="mt-6 max-w-2xl text-base leading-8 text-muted-foreground sm:text-lg sm:leading-9">
                 Practical tutorials, development notes, lessons from real-world projects, and
                 thoughts on building better software.
               </p>
             </div>
 
-            <div className="flex items-center gap-4 border-t border-border pt-5 md:border-l md:border-t-0 md:pl-8 md:pt-0">
-              <span className="text-4xl font-semibold tracking-tight text-foreground tabular-nums">
-                {totalPosts}
+            {/* Publication Statistics */}
+            <div className="flex items-center gap-4 border-t border-border pt-5 md:min-w-36 md:border-l md:border-t-0 md:pl-7 md:pt-0">
+              <span className="text-4xl font-semibold tracking-tight text-foreground tabular-nums sm:text-5xl">
+                {String(totalPosts).padStart(2, "0")}
               </span>
 
-              <div className="text-sm leading-6 text-muted-foreground">
+              <div className="text-xs leading-5 text-muted-foreground">
                 Published
                 <br />
                 {totalPosts === 1 ? "article" : "articles"}
               </div>
             </div>
           </div>
-        </section>
+        </header>
 
         {/* Article Discovery */}
-        <section className="pt-10 sm:pt-12">
-          <div className="mb-7 flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
+        <section className="pt-10 sm:pt-14">
+          <div className="mb-8 flex flex-col gap-4 border-b border-border pb-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h2 className="text-xl font-semibold tracking-tight text-foreground">
-                Explore the articles
+              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+                Explore the archive
+              </p>
+
+              <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+                All articles<span className="text-primary">.</span>
               </h2>
-              <p className="mt-1 text-sm text-muted-foreground">
+
+              <p className="mt-2 text-sm leading-7 text-muted-foreground">
                 Find something useful for your next build.
               </p>
             </div>
 
-            <p className="text-xs font-medium text-muted-foreground">
+            <p className="text-xs font-medium tabular-nums text-muted-foreground">
               Page {currentPage} of {Math.max(totalPages, 1)}
             </p>
           </div>
 
           <BlogSearch posts={postsWithCategories} />
 
+          {/* Pagination */}
           {totalPages > 1 && (
-            <div className="mt-8  border-border pt-8">
+            <div className="mt-10 border-t border-border pt-8">
               <Pagination currentPage={currentPage} totalPages={totalPages} />
             </div>
           )}
