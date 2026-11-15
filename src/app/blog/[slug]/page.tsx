@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Clock3, Eye, CalendarDays, List } from "lucide-react";
+import { ArrowLeft, Clock3, Eye, CalendarDays } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -117,13 +117,14 @@ export default async function BlogDetailsPage({ params }: BlogDetailsPageProps) 
     },
   };
 
+  let headingIndex = 0;
+
   const renderMarkdownHeading = (Tag: "h2" | "h3") => {
     return function MarkdownHeading({ children }: { children?: ReactNode }) {
-      const text = String(children ?? "");
-      const headingId = slugifyHeading(text);
+      const heading = headings[headingIndex++];
 
       return (
-        <Tag id={headingId} className="scroll-mt-28">
+        <Tag id={heading?.slug} className="scroll-mt-28">
           {children}
         </Tag>
       );
@@ -178,11 +179,6 @@ export default async function BlogDetailsPage({ params }: BlogDetailsPageProps) 
             <h1 className="mt-7 max-w-5xl text-4xl font-bold leading-[1.12] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
               {post.title}
             </h1>
-
-            {/* Article Description */}
-            {/* <p className="mt-7 max-w-3xl text-lg leading-8 text-muted-foreground sm:text-xl sm:leading-9">
-              {post.description}
-            </p> */}
 
             {/* Article Metadata */}
             <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-4 border-b border-border pt-5 pb-5">
@@ -249,24 +245,17 @@ export default async function BlogDetailsPage({ params }: BlogDetailsPageProps) 
           {/* Article Body with Sticky Left Sidebar */}
           <section className="mx-auto max-w-7xl px-5 pb-20 pt-12 sm:px-8 sm:pt-16 lg:px-10 lg:pt-20">
             <div className="grid grid-cols-1 gap-10 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-14 xl:grid-cols-[260px_minmax(0,1fr)] xl:gap-20">
-              {/* Left Sidebar - Table of Contents */}
+              {/* Table of Contents */}
               {headings.length > 0 && (
-                <aside className="min-w-0 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:self-start lg:overflow-y-auto">
-                  <div className="rounded-xl border border-border bg-card p-5 sm:p-6 lg:border-0 lg:bg-transparent lg:p-0">
-                    <div className="mb-4 flex items-center gap-2">
-                      <List size={15} className="text-primary" />
-                      <p className="text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
-                        On this page
-                      </p>
-                    </div>
-
+                <aside className="order-1 min-w-0 lg:sticky lg:top-24 lg:order-1 lg:max-h-[calc(100vh-7rem)] lg:self-start lg:overflow-y-auto">
+                  <div className="rounded-xl border border-border bg-card p-4 sm:p-5 lg:border-0 lg:bg-transparent lg:p-0">
                     <TableOfContents headings={headings} />
                   </div>
                 </aside>
               )}
 
-              {/* Right Side - Article Content */}
-              <div className="min-w-0">
+              {/* Article Content */}
+              <div className="order-2 min-w-0 lg:order-2">
                 <div className="mx-auto max-w-3xl">
                   <div
                     className="
