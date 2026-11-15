@@ -42,12 +42,16 @@ export default async function Footer() {
 
   return (
     <footer className="border-t border-border bg-card">
-      <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:px-10">
-        <div className="grid gap-12 md:grid-cols-[1.5fr_1fr] md:gap-16">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+        <div className="grid gap-12 py-14 md:grid-cols-[1.4fr_1fr] md:gap-20 md:py-16">
           {/* Brand */}
-          <div className="max-w-lg">
-            <Link href="/" className="inline-flex items-center gap-3">
-              <Logo width={38} height={38} />
+          <div className="max-w-xl">
+            <Link
+              href="/"
+              aria-label={`${siteName} home`}
+              className="group inline-flex items-center gap-3"
+            >
+              <Logo width={40} height={40} />
 
               <span className="text-xl font-bold tracking-tight text-foreground">
                 {siteName}
@@ -55,24 +59,29 @@ export default async function Footer() {
               </span>
             </Link>
 
-            <p className="mt-5 text-sm leading-7 text-muted-foreground sm:text-base">
+            <p className="mt-6 max-w-md text-sm leading-7 text-muted-foreground sm:text-base">
               A space for learning, building, and sharing. Practical tutorials, real-world projects,
               and thoughtful insights from the world of software development.
             </p>
 
-            <p className="mt-5 text-sm font-medium tracking-wide text-primary">
-              Learning. Building. Sharing.
+            <p className="mt-6 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+              Learning
+              <span className="text-muted-foreground/50">/</span>
+              Building
+              <span className="text-muted-foreground/50">/</span>
+              Sharing
             </p>
           </div>
 
           {/* Navigation and Social */}
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-2">
+          <div className="grid grid-cols-2 gap-8 border-t border-border pt-8 md:border-t-0 md:pt-2">
+            {/* Explore */}
             <div>
-              <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              <h2 className="text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
                 Explore
               </h2>
 
-              <nav aria-label="Footer navigation" className="mt-5 flex flex-col items-start gap-4">
+              <nav aria-label="Footer navigation" className="mt-6 flex flex-col items-start gap-4">
                 {footerLinks.map(link => (
                   <Link
                     key={link.href}
@@ -85,22 +94,27 @@ export default async function Footer() {
               </nav>
             </div>
 
+            {/* Connect */}
             <div>
-              <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              <h2 className="text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
                 Connect
               </h2>
 
               {socialLinks.length > 0 && (
-                <div className="mt-5 flex flex-col items-start gap-4">
+                <div className="mt-6 flex flex-col items-start gap-3">
                   {socialLinks.map(({ label, href, icon: Icon }) => (
                     <a
                       key={label}
                       href={href}
                       target={label === "Email" ? undefined : "_blank"}
                       rel={label === "Email" ? undefined : "noopener noreferrer"}
-                      className="inline-flex items-center gap-3 text-sm font-medium text-foreground transition-colors hover:text-primary"
+                      aria-label={label}
+                      className="group inline-flex items-center gap-3 rounded-lg py-1 text-sm font-medium text-foreground transition-colors hover:text-primary"
                     >
-                      <Icon size={16} />
+                      <Icon
+                        size={16}
+                        className="text-muted-foreground transition-colors group-hover:text-primary"
+                      />
                       {label}
                     </a>
                   ))}
@@ -111,7 +125,7 @@ export default async function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-14 flex flex-col gap-5 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 border-t border-border py-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs leading-5 text-muted-foreground">
             © {new Date().getFullYear()} {siteName}. All rights reserved.
           </p>
@@ -120,10 +134,10 @@ export default async function Footer() {
             href={portfolioUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm font-medium text-foreground transition-colors hover:text-primary"
+            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
           >
             Built by Dainy Jose
-            <ArrowUpRight size={15} />
+            <ArrowUpRight size={15} className="transition-transform group-hover:translate-x-0.5" />
           </a>
         </div>
       </div>
