@@ -11,6 +11,8 @@ const ThemeToggle = dynamic(() => import("@/components/ui/ThemeToggle"), {
   ssr: false,
 });
 
+const portfolioUrl = "https://dainyjose.github.io/my-portfolio";
+
 const navLinks = [
   { href: "/blog", label: "Articles" },
   { href: "/about", label: "About" },
@@ -47,8 +49,7 @@ export default function Navbar() {
           <Logo width={38} height={38} />
 
           <span className="text-xl font-bold tracking-tight text-foreground">
-            StackQuill
-            <span className="text-primary">.</span>
+            StackQuill<span className="text-primary">.</span>
           </span>
         </Link>
 
@@ -77,17 +78,20 @@ export default function Navbar() {
             );
           })}
 
+          {/* Portfolio */}
+          <a
+            href={portfolioUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:opacity-75"
+          >
+            Portfolio
+            <ArrowUpRight size={15} />
+          </a>
+
           <span className="h-5 w-px bg-border" />
 
           <ThemeToggle />
-
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90"
-          >
-            Explore articles
-            <ArrowUpRight size={15} />
-          </Link>
         </div>
 
         {/* Mobile Actions */}
@@ -134,14 +138,16 @@ export default function Navbar() {
               );
             })}
 
-            <Link
-              href="/blog"
+            <a
+              href={portfolioUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={closeMenu}
-              className="mt-3 flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground"
+              className="mt-2 flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold text-primary transition-colors hover:bg-accent"
             >
-              Explore articles
-              <ArrowUpRight size={16} />
-            </Link>
+              Visit my Portfolio
+              <ArrowUpRight size={17} />
+            </a>
           </div>
         </div>
       )}
