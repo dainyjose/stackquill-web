@@ -1,7 +1,5 @@
-import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Clock3, Star } from "lucide-react";
-import Logo from "../common/Logo";
+import Link from "next/link";
 
 interface BlogCardProps {
   title: string;
@@ -12,7 +10,7 @@ interface BlogCardProps {
     name: string;
     slug: string;
   } | null;
-  readTime?: string;
+  readTime?: number;
   coverImage?: string | null;
   featured?: boolean;
 }
@@ -20,89 +18,75 @@ interface BlogCardProps {
 export default function BlogCard({
   title,
   description,
+  slug,
   category,
   readTime,
-  slug,
   coverImage,
-  featured,
+  featured = false,
 }: BlogCardProps) {
   return (
-    <article className="group flex h-full min-w-0 flex-col overflow-hidden rounded-xl border border-border bg-card transition-all duration-200 hover:-translate-y-0.5 hover:border-foreground/20 hover:shadow-md">
-      {/* Cover */}
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
+      {/* Image */}
       <Link
         href={`/blog/${slug}`}
         aria-label={`Read ${title}`}
-        className="relative block h-48 shrink-0 overflow-hidden bg-muted sm:h-52"
+        className="relative block aspect-[16/9] w-full shrink-0 overflow-hidden bg-muted"
       >
         {coverImage ? (
           <Image
             src={coverImage}
             alt={title}
             fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
           />
         ) : (
-          <div className="relative flex h-full items-center justify-center border-b border-border bg-gradient-to-br from-muted via-background to-muted">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-violet-500/10" />
-            <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-border bg-card/80 shadow-sm backdrop-blur-sm">
-              <Logo width={40} height={40} />
-            </div>
+          <div className="flex h-full items-center justify-center">
+            <span className="text-3xl font-bold tracking-tight text-muted-foreground/30">
+              StackQuill.
+            </span>
           </div>
-        )}
-
-        {featured && (
-          <span className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-border bg-background/90 px-3 py-1.5 text-xs font-medium text-foreground shadow-sm backdrop-blur-sm">
-            <Star size={13} className="fill-amber-400 text-amber-500" />
-            Featured
-          </span>
         )}
       </Link>
 
       {/* Content */}
-      <div className="flex flex-1 flex-col p-4 sm:p-5">
-        {/* Category */}
-
-        {category && (
-          <div className="mb-3">
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
+        {/* Metadata */}
+        <div className="mb-4 flex min-h-7 flex-wrap items-center gap-3 text-xs">
+          {category && (
             <Link
               href={`/topics/${category.slug}`}
-              className="inline-flex max-w-full items-center rounded-md border border-border bg-muted/40 px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              className="rounded-full bg-accent px-3 py-1.5 font-semibold text-accent-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
             >
-              <span className="truncate">{category.name}</span>
+              {category.name}
             </Link>
-          </div>
-        )}
+          )}
 
-        {/* Fixed title area keeps descriptions aligned */}
-        <h2 className="line-clamp-2 min-h-12 text-base font-semibold leading-6 tracking-tight text-foreground transition-colors group-hover:text-foreground sm:text-lg">
-          <Link href={`/blog/${slug}`} className="outline-none focus-visible:underline">
-            {title}
-          </Link>
+          {readTime != null && <span className="text-muted-foreground">{readTime} min read</span>}
+
+          {featured && (
+            <span className="font-semibold uppercase tracking-wider text-primary">Featured</span>
+          )}
+        </div>
+
+        {/* Title */}
+        <h2 className="line-clamp-2 min-h-[3.5rem] text-lg font-semibold leading-7 tracking-tight text-card-foreground transition-colors group-hover:text-primary sm:text-xl">
+          <Link href={`/blog/${slug}`}>{title}</Link>
         </h2>
 
-        {/* Consistent description height */}
-        <p className="mt-2 line-clamp-3 min-h-[4.5rem] text-sm leading-6 text-muted-foreground">
+        {/* Description */}
+        <p className="mt-3 line-clamp-3 min-h-[4.875rem] break-words text-sm leading-[1.625rem] text-muted-foreground">
           {description}
         </p>
 
-        {/* Footer stays at the bottom */}
-        <div className="mt-auto flex min-h-12 items-end justify-between gap-3 border-t border-border pt-4">
-          <div className="flex min-w-0 items-center gap-1.5 text-xs text-muted-foreground">
-            {readTime && (
-              <>
-                <Clock3 size={14} className="shrink-0" />
-                <span className="truncate">{readTime}</span>
-              </>
-            )}
-          </div>
-
+        {/* Action */}
+        <div className="mt-auto pt-6">
           <Link
             href={`/blog/${slug}`}
-            className="inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-foreground transition-colors hover:text-blue-600 dark:hover:text-blue-400"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-primary transition-all group-hover:gap-3"
           >
             Read article
-            <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
+            <span aria-hidden="true">→</span>
           </Link>
         </div>
       </div>
