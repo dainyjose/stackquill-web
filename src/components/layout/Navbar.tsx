@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
@@ -25,6 +25,18 @@ export default function Navbar() {
 
   const closeMenu = () => setIsMenuOpen(false);
 
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeMenu();
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, []);
+
   const isActive = (href: string) => {
     if (href === "/blog") {
       return pathname === "/blog" || pathname.startsWith("/blog/");
@@ -34,7 +46,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/80 bg-background/90 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-border/70 bg-background/85 backdrop-blur-xl">
       <nav
         aria-label="Main navigation"
         className="mx-auto flex h-[76px] max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-10"
@@ -54,7 +66,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-2 md:flex">
           {navLinks.map(link => {
             const active = isActive(link.href);
 
@@ -63,17 +75,13 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 aria-current={active ? "page" : undefined}
-                className={`relative py-2 text-sm font-medium transition-colors ${
-                  active ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                  active
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >
                 {link.label}
-
-                <span
-                  className={`absolute inset-x-0 -bottom-[2px] h-0.5 rounded-full bg-primary transition-transform duration-200 ${
-                    active ? "scale-x-100" : "scale-x-0"
-                  }`}
-                />
               </Link>
             );
           })}
@@ -83,13 +91,13 @@ export default function Navbar() {
             href={portfolioUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:opacity-75"
+            className="ml-2 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary/15"
           >
             Portfolio
             <ArrowUpRight size={15} />
           </a>
 
-          <span className="h-5 w-px bg-border" />
+          <span className="mx-3 h-5 w-px bg-border" />
 
           <ThemeToggle />
         </div>
@@ -104,7 +112,7 @@ export default function Navbar() {
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={isMenuOpen}
             aria-controls="mobile-navigation"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-muted"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             {isMenuOpen ? <X size={19} /> : <Menu size={19} />}
           </button>
@@ -115,7 +123,7 @@ export default function Navbar() {
       {isMenuOpen && (
         <div
           id="mobile-navigation"
-          className="border-t border-border bg-background px-5 py-5 md:hidden"
+          className="animate-in slide-in-from-top-2 border-t border-border bg-background px-5 py-5 duration-200 md:hidden"
         >
           <div className="mx-auto flex max-w-7xl flex-col gap-1">
             {navLinks.map(link => {
@@ -143,7 +151,7 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeMenu}
-              className="mt-2 flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold text-primary transition-colors hover:bg-accent"
+              className="mt-2 flex items-center justify-between rounded-xl bg-primary/10 px-4 py-3 text-sm font-semibold text-primary transition-colors hover:bg-primary/15"
             >
               Visit my Portfolio
               <ArrowUpRight size={17} />
