@@ -313,9 +313,9 @@ export default async function BlogDetailsPage({ params }: BlogDetailsPageProps) 
               </div>
             </div>
           </section>
-          <section className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10 mb-15">
+          <div className="mx-auto mb-16 max-w-7xl px-5 sm:px-8 lg:px-10">
             <RelatedPosts posts={relatedPosts} />
-          </section>
+          </div>
         </article>
       </main>
     </>
